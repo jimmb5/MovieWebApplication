@@ -1,0 +1,14 @@
+:root {
+  /* colors */
+  --primary-color: #121212;
+  --secondary-color: #222222;
+  --text-color: #ffffff;
+
+  /*paddings etc*/
+  --small-padding: 0.5rem;
+  --medium-padding: 1rem;
+  --large-padding: 2rem;
+
+
+}
+

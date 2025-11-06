@@ -1,0 +1,23 @@
+.home {
+  display: flex;
+  flex-direction: column;
+}
+
+.home-content {
+  flex: 1;
+  padding: var(--large-padding);
+  width: 100%;
+  margin: 0 auto;
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: var(--large-padding);
+}
+
+.search-bar {
+  padding: var(--small-padding);
+  border-radius: var(--small-padding);
+}
