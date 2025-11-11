@@ -123,7 +123,12 @@ import {
       // Luo uusi access token
       const accessToken = generateAccessToken(user.id);
   
-      res.json({ accessToken });
+      res.json({ 
+        accessToken,
+        id: user.id,
+        username: user.username,
+        email: user.email
+       });
     } catch (err) {
       next(err);
     }

@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { Link } from 'react-router-dom';
 import { GoArrowUpRight } from 'react-icons/go';
+import { FaUser } from 'react-icons/fa';
 import './CardNav.css';
 
 const CardNav = ({
@@ -13,7 +14,9 @@ const CardNav = ({
   baseColor = '#fff',
   menuColor,
   buttonBgColor,
-  buttonTextColor
+  buttonTextColor,
+  onUserIconClick,
+  userButtonRef
 }) => {
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -113,17 +116,46 @@ const CardNav = ({
     return () => window.removeEventListener('resize', handleResize);
   }, [isExpanded]);
 
-  const toggleMenu = () => {
+  const toggleMenu = (onComplete, fastClose = false) => {
     const tl = tlRef.current;
-    if (!tl) return;
+    if (!tl) {
+      if (onComplete && typeof onComplete === 'function') {
+        onComplete();
+      }
+      return;
+    }
     if (!isExpanded) {
       setIsHamburgerOpen(true);
       setIsExpanded(true);
       tl.play(0);
+      if (onComplete && typeof onComplete === 'function') {
+        onComplete();
+      }
     } else {
       setIsHamburgerOpen(false);
-      tl.eventCallback('onReverseComplete', () => setIsExpanded(false));
-      tl.reverse();
+      if (fastClose) {
+        // sulku ilman animaatiota
+        tl.kill();
+        gsap.set(navRef.current, { height: 60, overflow: 'hidden' });
+        gsap.set(cardsRef.current, { y: 50, opacity: 0 });
+        setIsExpanded(false);
+        const newTl = createTimeline();
+        if (newTl) {
+          tlRef.current = newTl;
+        }
+        if (onComplete && typeof onComplete === 'function') {
+          onComplete();
+        }
+      } else {
+        // norm
+        tl.eventCallback('onReverseComplete', () => {
+          setIsExpanded(false);
+          if (onComplete && typeof onComplete === 'function') {
+            onComplete();
+          }
+        });
+        tl.reverse();
+      }
     }
   };
 
@@ -152,11 +184,25 @@ const CardNav = ({
           </div>
 
           <button
+            ref={userButtonRef}
             type="button"
             className="card-nav-cta-button"
             style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
+            onClick={() => {
+              // kutsutaan user icon handleria vasta kun menu on suljettu. muuten bugaa.
+              if (isExpanded) {
+                
+                toggleMenu(() => {
+                  onUserIconClick();
+                }, true); // true flag = sulku ilman animaatiota
+              } else {
+                // normi kutsu
+                onUserIconClick();
+              }
+            }}
+            aria-label="Open login"
           >
-            Get Started
+            <FaUser size={20} />
           </button>
         </div>
 
