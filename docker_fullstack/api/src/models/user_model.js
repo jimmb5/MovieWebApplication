@@ -66,3 +66,41 @@ export async function clearRefreshToken(userId) {
   );
   return result.rows[0];
 }
+
+// Poista käyttäjä
+export async function deleteOne(userId) {
+  const result = await pool.query(
+    "DELETE FROM users WHERE id = $1 RETURNING id, username, email",
+    [userId]
+  );
+  return result.rows[0];
+}
+
+// Vaihda käyttäjän nimeä
+export async function changeName(userId, newUsername) {
+  const result = await pool.query(
+    "UPDATE users SET username = $1 WHERE id = $2 RETURNING id, username, email",
+    [newUsername, userId]
+  );
+  return result.rows.length > 0 ? result.rows[0] : null;
+}
+
+// Vaihda käyttäjän sähköpostia
+export async function changeEmail(userId, newEmail) {
+  const result = await pool.query(
+    "UPDATE users SET email = $1 WHERE id = $2 RETURNING id, username, email",
+    [newEmail, userId]
+  );
+  return result.rows.length > 0 ? result.rows[0] : null;
+}
+
+// Vaihda käyttäjän salasanaa
+export async function changePassword(userId, newPassword) {
+  const hashedPassword = await bcrypt.hash(newPassword, SALT_ROUNDS);
+  const result = await pool.query(
+    "UPDATE users SET password = $1 WHERE id = $2 RETURNING id, username, email",
+    [hashedPassword, userId]
+  );
+  return result.rows.length > 0 ? result.rows[0] : null;
+}
+

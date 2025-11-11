@@ -4,7 +4,11 @@ import {
     authenticateUser,
     saveRefreshToken,
     getUserByRefreshToken,
-    clearRefreshToken
+    clearRefreshToken,
+    deleteOne,
+    changeName,
+    changeEmail,
+    changePassword
   } from "../models/user_model.js";
   import {
     generateAccessToken,
@@ -152,6 +156,90 @@ import {
       res.clearCookie("refreshToken");
   
       res.json({ message: "Logout successful" });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  export async function deleteUser(req, res, next) {
+    try {
+      const { userId } = req.params;
+      const user = await deleteOne(userId);
+      
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      
+      res.json({ message: `User ${user.username} with id ${user.id} deleted successfully` });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  export async function changeUsername(req, res, next) {
+    try {
+      const { userId } = req.params;
+      const { newUsername } = req.body;
+
+      if (!newUsername) {
+        return res.status(400).json({ error: "New username is required" });
+      }
+
+      const user = await changeName(userId, newUsername);
+
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      res.json({ message: `User with id ${user.id} username changed to ${newUsername}` });
+    } catch (err) {
+      if (err.code === '23505' && err.constraint && err.constraint.includes('username')) {
+        return res.status(409).json({ error: "Username already exists" });
+      }
+      next(err);
+    }
+  }
+
+  export async function changeUserEmail(req, res, next) {
+    try {
+      const { userId } = req.params;
+      const { newEmail } = req.body;
+
+      if (!newEmail) {
+        return res.status(400).json({ error: "New email is required" });
+      }
+
+      const user = await changeEmail(userId, newEmail);
+
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      res.json({ message: `User ${user.username} with id ${user.id} email changed to ${newEmail}` });
+    } catch (err) {
+      if (err.code === '23505' && err.constraint && err.constraint.includes('email')) {
+        return res.status(409).json({ error: "Email already exists" });
+      }
+      next(err);
+    }
+  }
+
+  export async function changeUserPassword(req, res, next) {
+    try {
+      const { userId } = req.params;
+      const { newPassword } = req.body;
+
+      if (!newPassword) {
+        return res.status(400).json({ error: "New password is required" });
+      }
+
+      const user = await changePassword(userId, newPassword);
+
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      res.json({ message: `User ${user.username} with id ${user.id} password changed` });
     } catch (err) {
       next(err);
     }
