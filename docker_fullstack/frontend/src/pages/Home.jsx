@@ -1,3 +1,4 @@
+import NowPlaying from "../components/NowPlaying";
 import "./Home.css";
 
 function Home() {
@@ -5,10 +6,15 @@ function Home() {
     <div className="home">
       <main className="home-content">
         <div className="search-container">
-          <input type="text" placeholder="Search for movies" className="search-bar" />
+          <input
+            type="text"
+            placeholder="Search for movies"
+            className="search-bar"
+          />
         </div>
         <h1>Asd </h1>
         <p>Asd asd asd</p>
+        <NowPlaying />
       </main>
     </div>
   );
