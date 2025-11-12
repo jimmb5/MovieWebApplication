@@ -325,6 +325,17 @@
   min-width: 0;
 }
 
+.user-dropdown-username-link {
+  text-decoration: none;
+  display: block;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.user-dropdown-username-link:hover {
+  opacity: 0.8;
+}
+
 .user-dropdown-username {
   color: #fff;
   font-weight: 500;
