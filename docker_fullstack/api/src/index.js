@@ -4,8 +4,6 @@ import cookieParser from "cookie-parser";
 import "dotenv/config";
 import { authenticateToken } from "./middleware/auth.js";
 import userRouter from "./routers/user_router.js";
-
-import bookRouter from "./routers/book_router.js";
 import movieRouter from "./routers/movie_router.js";
 
 const app = express();
