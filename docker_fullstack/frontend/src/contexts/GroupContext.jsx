@@ -196,10 +196,6 @@ export function GroupProvider({ children }) {
   const handleRemoveMember = async (memberId) => {
     if (!accessToken || !groupId) return false;
 
-    if (!window.confirm("Are you sure you want to remove this member from the group?")) {
-      return false;
-    }
-
     try {
       const res = await fetch(`${process.env.REACT_APP_API_URL}/groups/${groupId}/members/${memberId}`, {
         method: "DELETE",
@@ -217,6 +213,7 @@ export function GroupProvider({ children }) {
 
       addToast("Member removed successfully", "success");
       fetchMembers();
+      fetchGroup(); // Päivitetään ryhmän tiedot 
       return true;
     } catch (error) {
       console.error("Error removing member:", error);
@@ -247,6 +244,7 @@ export function GroupProvider({ children }) {
       addToast("Join request approved", "success");
       fetchJoinRequests();
       fetchMembers();
+      fetchGroup(); // Päivitetään ryhmän tiedot 
       return true;
     } catch (error) {
       console.error("Error approving request:", error);
@@ -284,6 +282,68 @@ export function GroupProvider({ children }) {
     }
   };
 
+  // Päivitä ryhmän tiedot tällä hetkellä nimi + kuvaus
+  const handleUpdateGroup = async (name, description) => {
+    if (!accessToken || !groupId) return false;
+
+    try {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/groups/${groupId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${accessToken}`
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          name: name !== undefined ? name : group?.name,
+          description: description !== undefined ? description : group?.description
+        }),
+      });
+
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.error);
+      }
+
+      addToast("Group updated successfully", "success");
+      fetchGroup(); // päivitetään ryhmän tiedot
+      return true;
+    } catch (error) {
+      console.error("Error updating group:", error);
+      addToast("Failed to update group", "error");
+      return false;
+    }
+  };
+
+  // Poista ryhmä
+  const handleDeleteGroup = async () => {
+    if (!accessToken || !groupId) return false;
+
+    try {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/groups/${groupId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${accessToken}`
+        },
+        credentials: "include",
+      });
+
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.error);
+      }
+
+      addToast("Group deleted successfully", "success");
+      navigate("/groups");
+      return true;
+    } catch (error) {
+      console.error("Error deleting group:", error);
+      addToast("Failed to delete group", "error");
+      return false;
+    }
+  };
+
   const value = {
     group,
     members,
@@ -303,6 +363,8 @@ export function GroupProvider({ children }) {
     handleRemoveMember,
     handleApproveRequest,
     handleRejectRequest,
+    handleUpdateGroup,
+    handleDeleteGroup,
   };
 
   return <GroupContext.Provider value={value}>{children}</GroupContext.Provider>;

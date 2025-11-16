@@ -7,8 +7,11 @@ import Profile from "./pages/Profile";
 import Groups from "./pages/OwnGroups";
 import PublicGroups from "./pages/PublicGroups";
 import Favorites from "./pages/Favorites";
-import Settings from "./pages/Settings";
+import Settings from "./pages/ProfileSettings";
 import Group from "./pages/Group";
+import GroupSettings from "./pages/GroupSettings";
+import GroupMembers from "./pages/GroupMembers";
+import GroupPendingRequests from "./pages/GroupPendingRequests";
 
 function App() {
   return (
@@ -17,6 +20,9 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/groups" element={<PublicGroups />} />
         <Route path="/groups/:groupId" element={<ProtectedRoute><Group /></ProtectedRoute>} />
+        <Route path="/groups/:groupId/members" element={<ProtectedRoute><GroupMembers /></ProtectedRoute>} />
+        <Route path="/groups/:groupId/pending-requests" element={<ProtectedRoute><GroupPendingRequests /></ProtectedRoute>} />
+        <Route path="/groups/:groupId/settings" element={<ProtectedRoute><GroupSettings /></ProtectedRoute>} />
         <Route path="/movies" element={<ProtectedRoute><Movies /></ProtectedRoute>} />
         <Route path="/:username" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path="/:username/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />

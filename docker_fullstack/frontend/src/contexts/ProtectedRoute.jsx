@@ -1,12 +1,14 @@
 import { useEffect } from "react";
 import { useAuth } from "./AuthContext";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, useLocation, useParams } from "react-router-dom";
 import { useToast } from "./ToastContext";
+import { GroupProvider } from "./GroupContext";
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
   const location = useLocation();
   const { addToast } = useToast();
+  const { groupId } = useParams();
 
   useEffect(() => {
     if (!loading && !user) {
@@ -20,6 +22,15 @@ function ProtectedRoute({ children }) {
 
   if (!user) {
     return <Navigate to="/" state={{ openLogin: true, from: location }} replace />;
+  }
+
+  // jos groupid:llinen reitti, annetaan group context
+  if (groupId) {
+    return (
+      <GroupProvider>
+        {children}
+      </GroupProvider>
+    );
   }
   
   return children;
