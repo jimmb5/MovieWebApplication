@@ -4,7 +4,10 @@ import cookieParser from "cookie-parser";
 import "dotenv/config";
 import { authenticateToken } from "./middleware/auth.js";
 import userRouter from "./routers/user_router.js";
+
+import groupsRouter from "./routers/groups_router.js";
 import movieRouter from "./routers/movie_router.js";
+
 
 const app = express();
 const port = process.env.PORT;
@@ -28,9 +31,8 @@ app.get("/", async (req, res) => {
 app.use("/user", userRouter);
 app.use("/movie", movieRouter);
 
-// ESIM. tulevaisuudessa suojatut reitit tähän eli kaikki reitit vaativat autentikoinnin:
-// app.use("/groups", authenticateToken, groupsRouter);
-// app.use("/movies", authenticateToken, moviesRouter);
+// Suojatut reitit (kaikki endpointit vaativat autentikoinnin)
+app.use("/groups", groupsRouter);
 
 app.listen(port, () => {
   console.log(`Server is listening port ${port}`);

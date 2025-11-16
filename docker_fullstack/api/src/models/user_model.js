@@ -103,4 +103,3 @@ export async function changePassword(userId, newPassword) {
   );
   return result.rows.length > 0 ? result.rows[0] : null;
 }
-

@@ -1,13 +1,18 @@
 import { useParams } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import ProfileSidebar from "../components/ProfileSidebar";
+import "./Favorites.css";
 
 function Favorites() {
   const { username } = useParams();
   const { user } = useAuth();
 
   return (
-    <div>
-    </div>
+    <main className="favorites-page">
+      <div className="favorites-content">
+        <ProfileSidebar username={username} />
+      </div>
+    </main>
   );
 }
 

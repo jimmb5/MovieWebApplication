@@ -1,0 +1,28 @@
+.favorites-page {
+    min-height: 100vh;
+    padding: var(--large-padding);
+    padding-top: calc(2em + 60px + var(--large-padding));
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.favorites-content {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 3rem;
+    align-items: start;
+    padding: var(--medium-padding);
+}
+
+@media (max-width: 768px) {
+    .favorites-page {
+        padding-top: calc(1.2em + 60px + var(--large-padding)); 
+    }
+    
+    .favorites-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+}
+
+

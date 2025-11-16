@@ -1,0 +1,232 @@
+.public-groups-page {
+    min-height: 100vh;
+    padding: var(--large-padding);
+    padding-top: calc(2em + 60px + var(--large-padding));
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+}
+
+.public-groups-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--medium-padding);
+}
+
+.public-groups-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.public-groups-header h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin: 0;
+}
+
+.public-groups-header > p {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+}
+
+.public-groups-controls {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+}
+
+.public-groups-search-input {
+    flex: 1;
+    padding: 0.875rem 1.25rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #fff;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.public-groups-search-input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.public-groups-search-input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.05);
+}
+
+.public-groups-list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.public-group-item-actions .public-group-member-text {
+    color: #34c759;
+}
+
+.public-group-item-actions .public-group-pending-text {
+    color: #ff9500;
+}
+
+.public-group-item {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+}
+
+.public-group-item:last-child {
+    border-bottom: none;
+}
+
+.public-group-item-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.public-group-link {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin: 0;
+    line-height: 1.3;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.public-group-link:hover {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: underline;
+}
+
+.public-group-item p {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.public-group-item-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    align-self: center;
+}
+
+.public-group-join-button {
+    background: transparent;
+    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 0.5rem 1.25rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.public-group-join-button:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: #fff;
+}
+
+.public-group-join-button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.public-group-login-text {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.9rem;
+    white-space: nowrap;
+    margin: 0;
+}
+
+
+.public-groups-empty {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.1rem;
+    text-align: center;
+    margin-top: 3rem;
+    padding: 2rem;
+}
+
+.public-groups-loading {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.1rem;
+    text-align: center;
+    margin-top: 3rem;
+    padding: 2rem;
+}
+
+@media (max-width: 768px) {
+    .public-groups-page {
+        padding-top: calc(1.2em + 60px + var(--large-padding));
+        padding-left: var(--medium-padding);
+        padding-right: var(--medium-padding);
+    }
+
+    .public-groups-content {
+        padding: 0;
+    }
+
+    .public-groups-header h1 {
+        font-size: 2rem;
+    }
+
+    .public-groups-list {
+        gap: 1rem;
+    }
+
+    .public-group-item {
+        padding: 1.25rem 0;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .public-group-item-actions {
+        width: 100%;
+    }
+
+    .public-group-join-button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .public-groups-header h1 {
+        font-size: 1.75rem;
+    }
+
+    .public-group-item h2 {
+        font-size: 1.25rem;
+    }
+}
+
