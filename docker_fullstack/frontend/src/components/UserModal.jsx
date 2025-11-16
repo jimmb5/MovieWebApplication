@@ -97,7 +97,7 @@ function UserModal({ onClose, buttonRef }) {
       </button>
       <button className="user-dropdown-item" onClick={handleGroups}>
         <FaUsers />
-        <span>Groups</span>
+        <span>My groups</span>
       </button>
       <button className="user-dropdown-item" onClick={handleFavorites}>
         <FaStar />

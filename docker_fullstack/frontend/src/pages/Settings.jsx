@@ -1,10 +1,10 @@
 import { useParams } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { FaUserCircle } from "react-icons/fa";
 import "./Settings.css";
 import { useState, useEffect } from "react";
 import { useToast } from "../contexts/ToastContext";
 import { useNavigate } from "react-router-dom";
+import ProfileSidebar from "../components/ProfileSidebar";
 
 function Settings() {
   const { username } = useParams();
@@ -247,15 +247,7 @@ function Settings() {
     <div>
       <main className="settings-page">
         <div className="settings-content">
-          <div className="settings-sidebar">
-            <div className="settings-avatar">
-              <FaUserCircle size={40} />
-            </div>
-            <div className="settings-user-info">
-              <h2 className="settings-username">{username}</h2>
-              <p className="settings-subtitle">Your account</p>
-            </div>
-          </div>
+          <ProfileSidebar username={username} />
           <div className="settings-form">
             
             <section className="settings-section">

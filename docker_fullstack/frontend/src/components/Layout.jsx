@@ -53,7 +53,7 @@ function Layout() {
       textColor: "#fff",
       links: [
         { label: "Favorites", href: "/favorites", ariaLabel: "Favorites" },
-        { label: "My Groups", href: "/groups", ariaLabel: "My Groups" },
+        { label: "Groups", href: "/groups", ariaLabel: "Groups" },
         { label: "Settings", href: "/settings", ariaLabel: "Settings" }
       ]
     }
