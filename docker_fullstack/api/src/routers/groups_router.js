@@ -28,7 +28,7 @@ groupsRouter.get("/", getGroups);
 groupsRouter.get("/:groupId", authenticateToken, getGroup);
 groupsRouter.post("/create", authenticateToken, addGroup);
 groupsRouter.put("/:groupId", authenticateToken, updateGroup); // Testaamatta postmanilla
-groupsRouter.delete("/:groupId", authenticateToken, deleteGroup);
+groupsRouter.delete("/:groupId", deleteGroup);
 
 groupsRouter.get("/user/join-requests", authenticateToken, getUserJoinRequestsList);
 groupsRouter.get("/user/:userId", authenticateToken, getUserGroups);

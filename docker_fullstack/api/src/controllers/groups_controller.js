@@ -31,6 +31,14 @@ export async function getGroups(req, res, next) {
 export async function getGroup(req, res, next) {
   try {
     const { groupId } = req.params;
+    const userId = req.user.userId;
+    
+    // vain jäsenet voivat nähdä ryhmän tiedot
+    const membership = await isMember(groupId, userId);
+    if (!membership) {
+      return res.status(403).json({ error: "You must be a member of this group to view it" });
+    }
+    
     const group = await getOne(groupId);
     
     if (!group) {
