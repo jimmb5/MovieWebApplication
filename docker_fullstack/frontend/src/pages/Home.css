@@ -13,11 +13,10 @@
 .search-container {
   display: flex;
   justify-content: center;
-  align-items: center;
-  margin-bottom: var(--large-padding);
+  margin: 2rem 0;
 }
 
-.search-bar {
-  padding: var(--small-padding);
-  border-radius: var(--small-padding);
+.now-playing-container {
+  display: flex;
+  flex-direction: column;
 }
