@@ -16,7 +16,32 @@ import {
     generateRefreshToken,
     verifyRefreshToken
   } from "../utils/jwt.js";
-import bcrypt from "bcryptjs";
+  import bcrypt from "bcryptjs";
+
+
+  function validatePassword(password) {
+    if (!password) {
+      return "Password is required";
+    }
+
+    if (password.length < 8) {
+      return `Password must be at least 8 characters long`;
+    }
+
+    if (!/[A-Z]/.test(password)) {
+      return "Password must contain at least one uppercase letter";
+    }
+
+    if (!/[0-9]/.test(password)) {
+      return "Password must contain at least one number";
+    }
+
+    return null;
+  }
+
+  function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
   
   // Hae kaikki käyttäjät
   export async function getUsers(req, res, next) {
@@ -35,6 +60,16 @@ import bcrypt from "bcryptjs";
   
       if (!username || !email || !password) {
         return res.status(400).json({ error: "Username, email and password are required" });
+      }
+
+      if (!isValidEmail(email)) {
+        return res.status(400).json({ error: "Email is not valid" });
+      }
+  
+      const passwordValidationError = validatePassword(password);
+  
+      if (passwordValidationError) {
+        return res.status(400).json({ error: passwordValidationError });
       }
 
   
@@ -211,6 +246,10 @@ import bcrypt from "bcryptjs";
         return res.status(400).json({ error: "New email is required" });
       }
 
+      if (!isValidEmail(newEmail)) {
+        return res.status(400).json({ error: "Email is not valid" });
+      }
+
       const user = await changeEmail(userId, newEmail);
 
       if (!user) {
@@ -233,6 +272,12 @@ import bcrypt from "bcryptjs";
 
     if (!currentPassword || !newPassword) {
       return res.status(400).json({ error: "Current and new password are required" });
+      }
+
+      const passwordValidationError = validatePassword(newPassword);
+
+      if (passwordValidationError) {
+        return res.status(400).json({ error: passwordValidationError });
       }
 
     const user = await getUserById(userId);
