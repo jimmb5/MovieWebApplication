@@ -6,6 +6,7 @@ import RegisterModal from "./RegisterModal";
 import UserModal from "./UserModal";
 import { useAuth } from "../contexts/AuthContext";
 import "./Modal.css";
+import "./Layout.css";
 
 function Layout() {
   const [IsLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -32,31 +33,55 @@ function Layout() {
       bgColor: "#212121",
       textColor: "#fff",
       links: [
-        { label: "Top Rated", href: "/movies/top-rated", ariaLabel: "Top Rated Movies" },
-        { label: "Popular", href: "/movies/popular", ariaLabel: "Popular Movies" },
-        { label: "Trending", href: "/movies/trending", ariaLabel: "Trending Movies" }
-      ]
+        {
+          label: "Top Rated",
+          href: "/movies/top-rated",
+          ariaLabel: "Top Rated Movies",
+        },
+        {
+          label: "Popular",
+          href: "/movies/popular",
+          ariaLabel: "Popular Movies",
+        },
+        {
+          label: "Trending",
+          href: "/movies/trending",
+          ariaLabel: "Trending Movies",
+        },
+      ],
     },
     {
-      label: "TV Shows", 
+      label: "TV Shows",
       bgColor: "#232323",
       textColor: "#fff",
       links: [
-        { label: "Top Rated", href: "/tv-shows/top-rated", ariaLabel: "Top Rated TV Shows" },
-        { label: "Popular", href: "/tv-shows/popular", ariaLabel: "Popular TV Shows" },
-        { label: "Trending", href: "/tv-shows/trending", ariaLabel: "Trending TV Shows" }
-      ]
+        {
+          label: "Top Rated",
+          href: "/tv-shows/top-rated",
+          ariaLabel: "Top Rated TV Shows",
+        },
+        {
+          label: "Popular",
+          href: "/tv-shows/popular",
+          ariaLabel: "Popular TV Shows",
+        },
+        {
+          label: "Trending",
+          href: "/tv-shows/trending",
+          ariaLabel: "Trending TV Shows",
+        },
+      ],
     },
     {
       label: "Profile & Groups",
-      bgColor: "#252525", 
+      bgColor: "#252525",
       textColor: "#fff",
       links: [
         { label: "Favorites", href: "/favorites", ariaLabel: "Favorites" },
         { label: "Groups", href: "/groups", ariaLabel: "Groups" },
-        { label: "Settings", href: "/settings", ariaLabel: "Settings" }
-      ]
-    }
+        { label: "Settings", href: "/settings", ariaLabel: "Settings" },
+      ],
+    },
   ];
 
   return (
@@ -79,15 +104,20 @@ function Layout() {
         }}
         userButtonRef={userButtonRef}
       />
-      <Outlet />
+      <div className="layout-content">
+        <Outlet />
+      </div>
       {(IsLoginModalOpen || showRegister) && !user && (
-        <div 
-          className="modal-overlay" 
+        <div
+          className="modal-overlay"
           onMouseDown={(e) => {
             mouseDownTarget.current = e.target;
           }}
           onMouseUp={(e) => {
-            if (mouseDownTarget.current === e.target && e.target.classList.contains('modal-overlay')) {
+            if (
+              mouseDownTarget.current === e.target &&
+              e.target.classList.contains("modal-overlay")
+            ) {
               setIsLoginModalOpen(false);
               setShowRegister(false);
             }
@@ -117,8 +147,8 @@ function Layout() {
         </div>
       )}
       {isUserDropdownOpen && user && (
-        <UserModal 
-          onClose={() => setIsUserDropdownOpen(false)} 
+        <UserModal
+          onClose={() => setIsUserDropdownOpen(false)}
           buttonRef={userButtonRef}
         />
       )}
@@ -127,4 +157,3 @@ function Layout() {
 }
 
 export default Layout;
-

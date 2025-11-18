@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
 import axios from "axios";
-import MovieCard from "./MovieCard";
 import "./SearchBar.css";
-import "./NowPlaying.css";
 
-export default function SearchBar({ setResults }) {
+export default function SearchBar({ setResults, setShowResults }) {
   const [query, setQuery] = useState("");
   const [debouncedQuery] = useDebounce(query, 500);
   useEffect(() => {
@@ -14,10 +12,13 @@ export default function SearchBar({ setResults }) {
         .get(`http://localhost:3001/movie/search?query=${debouncedQuery}`)
         .then((response) => {
           setResults(response.data);
+          setShowResults(true);
         })
         .catch((error) => {
           console.error(error);
         });
+    } else {
+      setShowResults(false);
     }
   }, [debouncedQuery]);
 

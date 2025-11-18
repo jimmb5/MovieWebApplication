@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import MovieCard from "./MovieCard";
-import "./NowPlaying.css";
+import MediaContainer from "./MediaContainer";
 
 export default function NowPlaying() {
   const [movies, setMovies] = useState([]);
+  const title = "Now Playing in Finland";
 
   useEffect(() => {
     axios
@@ -18,17 +18,8 @@ export default function NowPlaying() {
   }, []);
 
   return (
-    <section className="now-playing">
-      <h2>Now Playing in Finland</h2>
-      <div className="now-playing-grid">
-        {movies.map((movie) => (
-          <MovieCard
-            key={movie.id}
-            title={movie.title}
-            poster={movie.poster_path}
-          />
-        ))}
-      </div>
-    </section>
+    <div>
+      <MediaContainer title={title} mediaItems={movies} />
+    </div>
   );
 }

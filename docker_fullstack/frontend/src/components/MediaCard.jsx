@@ -1,9 +1,9 @@
 import React from "react";
-import "./MovieCard.css";
+import "./MediaCard.css";
 
-export default function MovieCard({ title, poster }) {
+export default function MediaCard({ title, poster }) {
   return (
-    <div className="movie">
+    <div className="media">
       <div className="poster">
         <img src={`https://image.tmdb.org/t/p/w500${poster}`} alt={title} />
       </div>

@@ -1,20 +1,14 @@
 import React from "react";
-import MovieCard from "./MovieCard";
-import "./NowPlaying.css";
+import MediaContainer from "./MediaContainer";
 
-export default function SearchResults({ results }) {
-  return (
-    <section className="now-playing">
-      <h2>Search Results</h2>
-      <div className="now-playing-grid">
-        {results.map((movie) => (
-          <MovieCard
-            key={movie.id}
-            title={movie.title}
-            poster={movie.poster_path}
-          />
-        ))}
+export default function SearchResults({ results, showResults }) {
+  const title = "Search Results";
+
+  if (!showResults) return null;
+  else
+    return (
+      <div>
+        <MediaContainer title={title} mediaItems={results} />
       </div>
-    </section>
-  );
+    );
 }

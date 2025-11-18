@@ -1,22 +1,25 @@
 .home {
   display: flex;
   flex-direction: column;
+  min-height: calc(100vh - var(--navbar-height));
 }
 
 .home-content {
   flex: 1;
-  padding: var(--large-padding);
   width: 100%;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .search-container {
   display: flex;
   justify-content: center;
-  margin: 2rem 0;
+  align-items: center;
+  margin-top: 10rem;
 }
 
 .now-playing-container {
-  display: flex;
-  flex-direction: column;
+  margin-top: auto;
+  padding-top: 2rem;
 }
