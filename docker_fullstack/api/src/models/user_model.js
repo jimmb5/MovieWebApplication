@@ -40,6 +40,15 @@ export async function authenticateUser(username, password) {
   return null;
 }
 
+// Hae yksittäinen käyttäjä pelkällä userId:llä (tarvitaan salasanan vaihtamista varten)
+export async function getUserById(userId) {
+  const result = await pool.query(
+    "SELECT id, username, email, password FROM users WHERE id = $1",
+    [userId]
+  );
+  return result.rows.length > 0 ? result.rows[0] : null;
+}
+
 // Tallenna refresh token
 export async function saveRefreshToken(userId, refreshToken) {
   const result = await pool.query(

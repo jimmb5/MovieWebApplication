@@ -184,7 +184,7 @@ function ProfileSettings() {
           "Authorization": `Bearer ${accessToken || ""}`
         },
         credentials: "include",
-        body: JSON.stringify({ newPassword }),
+        body: JSON.stringify({ currentPassword, newPassword }),
       });
 
       if (!res.ok) {

@@ -8,13 +8,15 @@ import {
     deleteOne,
     changeName,
     changeEmail,
-    changePassword
+    changePassword,
+    getUserById
   } from "../models/user_model.js";
   import {
     generateAccessToken,
     generateRefreshToken,
     verifyRefreshToken
   } from "../utils/jwt.js";
+import bcrypt from "bcryptjs";
   
   // Hae kaikki käyttäjät
   export async function getUsers(req, res, next) {
@@ -227,19 +229,27 @@ import {
   export async function changeUserPassword(req, res, next) {
     try {
       const { userId } = req.params;
-      const { newPassword } = req.body;
+    const { currentPassword, newPassword } = req.body;
 
-      if (!newPassword) {
-        return res.status(400).json({ error: "New password is required" });
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ error: "Current and new password are required" });
       }
 
-      const user = await changePassword(userId, newPassword);
+    const user = await getUserById(userId);
 
-      if (!user) {
-        return res.status(404).json({ error: "User not found" });
-      }
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
 
-      res.json({ message: `User ${user.username} with id ${user.id} password changed` });
+    const isCurrentPasswordValid = await bcrypt.compare(currentPassword, user.password);
+
+    if (!isCurrentPasswordValid) {
+      return res.status(401).json({ error: "Current password is incorrect" });
+    }
+
+      const updatedUser = await changePassword(userId, newPassword);
+
+      res.json({ message: `User ${updatedUser.username} with id ${updatedUser.id} password changed` });
     } catch (err) {
       next(err);
     }
