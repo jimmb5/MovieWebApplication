@@ -6,15 +6,14 @@ import "./Home.css";
 
 function Home() {
   const [results, setResults] = useState([]);
+  const [showResults, setShowResults] = useState(false);
   return (
     <div className="home">
       <main className="home-content">
-        <h1>Asd </h1>
-        <p>Asd asd asd</p>
         <div className="search-container">
-          <SearchBar setResults={setResults} />
+          <SearchBar setResults={setResults} setShowResults={setShowResults} />
         </div>
-        <SearchResults results={results} />
+        <SearchResults results={results} showResults={showResults} />
         <div className="now-playing-container">
           <NowPlaying />
         </div>

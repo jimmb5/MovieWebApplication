@@ -1,4 +1,4 @@
-.now-playing {
+.media-container {
   font-family: Arial, sans-serif;
   background: #1d1d1d;
   color: #fff;
@@ -7,7 +7,7 @@
   margin: 1rem;
 }
 
-.now-playing-grid {
+.media-grid {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
