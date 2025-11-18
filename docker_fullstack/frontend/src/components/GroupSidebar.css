@@ -68,6 +68,23 @@
     background: rgba(255, 255, 255, 0.5);
 }
 
+.group-sidebar-leave-button {
+    color: rgba(255, 87, 87, 0.8);
+}
+
+.group-sidebar-leave-button:hover {
+    color: #ff5757;
+    background: rgba(255, 87, 87, 0.1);
+}
+
+.group-sidebar-leave-button:hover svg {
+    color: #ff5757;
+}
+
+.group-sidebar-leave-button:hover::before {
+    background: rgba(255, 87, 87, 0.4);
+}
+
 .group-sidebar-avatar {
     width: 60px;
     height: 60px;

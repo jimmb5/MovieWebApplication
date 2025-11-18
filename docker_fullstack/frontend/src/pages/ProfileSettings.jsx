@@ -6,7 +6,7 @@ import { useToast } from "../contexts/ToastContext";
 import { useNavigate } from "react-router-dom";
 import ProfileSidebar from "../components/ProfileSidebar";
 
-function Settings() {
+function ProfileSettings() {
   const { username } = useParams();
   const { user, accessToken, refreshToken, logout } = useAuth();
   const { addToast } = useToast();
@@ -475,5 +475,5 @@ function Settings() {
   );
 }
 
-export default Settings;
+export default ProfileSettings;
 

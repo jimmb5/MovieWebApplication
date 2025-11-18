@@ -63,8 +63,13 @@
     font-weight: 600;
     color: var(--text-color);
     margin: 0;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.settings-section-subtitle{
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin: 0;
 }
 
 .settings-section-desc {
@@ -164,7 +169,7 @@
 
 .settings-button-delete {
     background: #1a1a1a;
-    color: red;
+    color: #fca5a5;
     border: none;
     padding: 0.625rem 0.875rem;
     border-radius: 8px;
@@ -178,7 +183,7 @@
 }
 
 .settings-button-delete:hover:not(:disabled) {
-    background: #222;
+    color: #f87171;
 }
 .settings-loading {
     font-size: 0.85rem;

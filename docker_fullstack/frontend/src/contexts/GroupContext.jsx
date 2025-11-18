@@ -344,6 +344,39 @@ export function GroupProvider({ children }) {
     }
   };
 
+  const leaveGroup = async () => {
+    if (!accessToken || !groupId) return false;
+
+    try {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/groups/${groupId}/leave`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${accessToken}`
+        },
+        credentials: "include",
+      });
+
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.error);
+      }
+
+      addToast("You have successfully left the group", "success");
+      navigate("/groups");
+      return true;
+    } catch (error) {
+      if(isOwner()) {
+        addToast("Group owner cannot leave the group. Transfer ownership first or delete the group.", "error");
+        return false;
+      } else {
+        console.error("Error leaving group:", error);
+        addToast("Failed to leave group", "error");
+        return false;
+      }
+    }
+  };
+
   const value = {
     group,
     members,
@@ -365,6 +398,7 @@ export function GroupProvider({ children }) {
     handleRejectRequest,
     handleUpdateGroup,
     handleDeleteGroup,
+    leaveGroup,
   };
 
   return <GroupContext.Provider value={value}>{children}</GroupContext.Provider>;

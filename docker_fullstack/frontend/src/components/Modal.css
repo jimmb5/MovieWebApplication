@@ -195,6 +195,12 @@
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.05);
 }
 
+.form-textarea:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: rgba(255, 255, 255, 0.03);
+}
+
 .register-link {
   color: #fff;
   text-decoration: underline;

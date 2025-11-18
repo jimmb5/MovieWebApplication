@@ -1,21 +1,24 @@
-import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { useAuth } from "../contexts/AuthContext";
-import { useToast } from "../contexts/ToastContext";
+import { useGroup } from "../contexts/GroupContext";
 import GroupSidebar from "../components/GroupSidebar";
+import ConfirmationModal from "../components/ConfirmationModal";
 import { FaEllipsisV } from "react-icons/fa";
 import "./Group.css";
 
 function Group() {
-  const { groupId } = useParams();
-  const { user, accessToken } = useAuth();
-  const { addToast } = useToast();
-  const navigate = useNavigate();
-  const [group, setGroup] = useState(null);
-  const [members, setMembers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [isMember, setIsMember] = useState(true);
+  const {
+    group,
+    members,
+    loading,
+    isMember,
+    canManageMember,
+    canRemoveMember,
+    handleUpdateRole,
+    handleRemoveMember,
+  } = useGroup();
   const [openMenuId, setOpenMenuId] = useState(null);
+  const [showRemoveModal, setShowRemoveModal] = useState(false);
+  const [memberToRemove, setMemberToRemove] = useState(null);
 
   // Dropdownin sulkemiseen kun klikataan sen ulkopuolelle
   useEffect(() => {
@@ -34,166 +37,26 @@ function Group() {
     };
   }, [openMenuId]);
 
-  useEffect(() => {
-    if (groupId && accessToken) {
-      fetchGroup();
-      fetchMembers();
-    }
-  }, [groupId, accessToken]);
-
-  const fetchGroup = async () => {
-    if (!accessToken) {
-      setLoading(false);
-      return;
-    }
-
-    setLoading(true);
-    setIsMember(true); // asetetaan että käyttäjä on jäsen
-    try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/groups/${groupId}`, {
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${accessToken}`
-        },
-        credentials: "include",
-      });
-
-      if (!res.ok) {
-        const error = await res.json();
-        // jos backend palauttaa 403 eli ei ole jäsen, asetetaan ismember falseksi ja ohjataan takaisin public groups sivulle
-        // tänne asti ei pitäisi edes päätyä koska linkit on myös estetty
-        if (res.status === 403) {
-          setIsMember(false);
-          addToast("You must be a member of this group to view it", "error");
-          setTimeout(() => {
-            navigate("/groups");
-          }, 2000);
-          return;
-        }
-        throw new Error(error.error || "Failed to fetch group");
-      }
-
-      const data = await res.json();
-      setGroup(data);
-    } catch (error) {
-      console.error("Error fetching group:", error);
-      addToast(error.message, "error");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchMembers = async () => {
-    if (!accessToken || !groupId) {
-      return;
-    }
-
-    try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/groups/${groupId}/members`, {
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${accessToken}`
-        },
-        credentials: "include",
-      });
-
-      if (!res.ok) {
-        throw new Error("Failed to fetch members");
-      }
-
-      const data = await res.json();
-      setMembers(data);
-    } catch (error) {
-      console.error("Error fetching members:", error);
-      addToast("Failed to load members", "error");
-    }
-  };
-
-  // haetaan käyttäjän rooli 
-  const getCurrentUserRole = () => {
-    if (!user || !members.length) return null;
-    const currentMember = members.find(m => m.id === user.id);
-    return currentMember ? currentMember.role : null;
-  };
-
-  const canManageMember = (member) => {
-    const currentRole = getCurrentUserRole();
-    if (!currentRole) return false;
-    // itselle ei voi tehdä mitään
-    if (member.id === user.id) return false;
-    
-    // vain owner voi muuttaa rooleja
-    return currentRole === 'owner';
-  };
-
-  const canRemoveMember = (member) => {
-    const currentRole = getCurrentUserRole();
-    if (!currentRole) return false;
-    if (member.id === user.id) return false; // ei voi poistaa itseään, voi poistua kylläkin
-    
-    if (currentRole === 'owner') {
-      return true; // owner voi poistaa kenet tahansa (paitsi itsensä)
-    }
-    if (currentRole === 'admin') {
-      return member.role === 'member'; // admin voi poistaa vain membereitä ( ei owner tai adminia)
-    }
-    return false;
-  };
-
-  // Päivitä jäsenen rooli
-  const handleUpdateRole = async (memberId, newRole) => {
-    if (!accessToken || !groupId) return;
-
-    try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/groups/${groupId}/members/${memberId}/role`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${accessToken}`
-        },
-        credentials: "include",
-        body: JSON.stringify({ newRole }),
-      });
-
-      if (!res.ok) {
-        const error = await res.json();
-        throw new Error(error.error || "Failed to update role");
-      }
-
-      addToast("Role updated successfully", "success");
+  const handleRoleUpdate = async (memberId, newRole) => {
+    const success = await handleUpdateRole(memberId, newRole);
+    if (success) {
       setOpenMenuId(null);
-      fetchMembers(); // päivitetään lista
-    } catch (error) {
-      console.error("Error updating role:", error);
-      addToast(error.message, "error");
     }
   };
 
-  // Poista jäsen ryhmästä
-  const handleRemoveMember = async (memberId) => {
-    if (!accessToken || !groupId) return;
+  const handleMemberRemoveClick = (memberId, memberUsername) => {
+    setMemberToRemove({ id: memberId, username: memberUsername });
+    setShowRemoveModal(true);
+    setOpenMenuId(null);
+  };
 
-    try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/groups/${groupId}/members/${memberId}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${accessToken}`
-        },
-        credentials: "include",
-      });
-
-      if (!res.ok) {
-        const error = await res.json();
-        throw new Error(error.error);
+  const handleConfirmRemove = async () => {
+    if (memberToRemove) {
+      const success = await handleRemoveMember(memberToRemove.id);
+      if (success) {
+        setShowRemoveModal(false);
+        setMemberToRemove(null);
       }
-
-      addToast("Member removed successfully", "success");
-      setOpenMenuId(null);
-      fetchMembers(); // päivitetään lista
-    } catch (error) {
-      console.error("Error removing member:", error);
-      addToast("Failed to remove member", "error");
     }
   };
 
@@ -236,7 +99,7 @@ function Group() {
       <div className="group-center-content">
         <div className="group-header">
           <h1>{group.name}</h1>
-          {group.description && <p>{group.description}</p>}
+          <p>Content here</p>
         </div>
         <div className="group-body">
         </div>
@@ -291,19 +154,19 @@ function Group() {
                             {canManage && (
                               <>
                                 <button
-                                  onClick={() => handleUpdateRole(member.id, 'admin')}
+                                  onClick={() => handleRoleUpdate(member.id, 'admin')}
                                   disabled={member.role === 'admin'}
                                 >
                                   Make Admin
                                 </button>
                                 <button
-                                  onClick={() => handleUpdateRole(member.id, 'member')}
+                                  onClick={() => handleRoleUpdate(member.id, 'member')}
                                   disabled={member.role === 'member'}
                                 >
                                   Make Member
                                 </button>
                                 <button
-                                  onClick={() => handleUpdateRole(member.id, 'owner')}
+                                  onClick={() => handleRoleUpdate(member.id, 'owner')}
                                   disabled={member.role === 'owner'}
                                 >
                                   Transfer Ownership
@@ -313,7 +176,7 @@ function Group() {
                             {canRemove && (
                               <button
                                 className="group-member-remove"
-                                onClick={() => handleRemoveMember(member.id)}
+                                onClick={() => handleMemberRemoveClick(member.id, member.username)}
                               >
                                 Remove from Group
                               </button>
@@ -331,6 +194,20 @@ function Group() {
           )}
         </div>
       </div>
+      
+      <ConfirmationModal
+        isOpen={showRemoveModal}
+        onClose={() => {
+          setShowRemoveModal(false);
+          setMemberToRemove(null);
+        }}
+        onConfirm={handleConfirmRemove}
+        title="Remove Member"
+        message={`Are you sure you want to remove "${memberToRemove?.username}" from this group?`}
+        confirmText="Remove"
+        cancelText="Cancel"
+        variant="delete"
+      />
     </main>
   );
 }
