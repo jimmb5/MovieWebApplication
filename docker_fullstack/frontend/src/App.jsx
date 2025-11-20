@@ -3,15 +3,15 @@ import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import ProtectedRoute from "./contexts/ProtectedRoute";
 import Movies from "./pages/Movies";
-import Profile from "./pages/Profile";
-import Groups from "./pages/OwnGroups";
-import PublicGroups from "./pages/PublicGroups";
-import Favorites from "./pages/Favorites";
-import Settings from "./pages/ProfileSettings";
-import Group from "./pages/Group";
-import GroupSettings from "./pages/GroupSettings";
-import GroupMembers from "./pages/GroupMembers";
-import GroupPendingRequests from "./pages/GroupPendingRequests";
+import Profile from "./pages/profile/Profile";
+import Groups from "./pages/profile/OwnGroups";
+import PublicGroups from "./pages/groups/PublicGroups";
+import Favorites from "./pages/profile/Favorites";
+import Settings from "./pages/profile/ProfileSettings";
+import Group from "./pages/groups/Group";
+import GroupSettings from "./pages/groups/GroupSettings";
+import GroupMembers from "./pages/groups/GroupMembers";
+import GroupPendingRequests from "./pages/groups/GroupPendingRequests";
 
 function App() {
   return (

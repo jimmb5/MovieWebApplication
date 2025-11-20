@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { useGroup } from "../contexts/GroupContext";
-import GroupSidebar from "../components/groups/GroupSidebar";
-import "./Settings.css";
+import { useGroup } from "../../contexts/GroupContext";
+import GroupSidebar from "../../components/groups/GroupSidebar";
+import "../Settings.css";
 import "./Group.css";
 
 function GroupPendingRequests() {

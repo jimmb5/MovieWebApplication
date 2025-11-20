@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { useGroup } from "../contexts/GroupContext";
-import GroupSidebar from "../components/groups/GroupSidebar";
-import ConfirmationModal from "../components/modals/ConfirmationModal";
-import GroupPostCreator from "../components/groups/GroupPostCreator";
-import GroupPost from "../components/groups/GroupPost";
-import DropdownMenu from "../components/modals/DropdownMenu";
+import { useGroup } from "../../contexts/GroupContext";
+import GroupSidebar from "../../components/groups/GroupSidebar";
+import ConfirmationModal from "../../components/modals/ConfirmationModal";
+import GroupPostCreator from "../../components/groups/GroupPostCreator";
+import GroupPost from "../../components/groups/GroupPost";
+import DropdownMenu from "../../components/modals/DropdownMenu";
 import "./Group.css";
 
 function Group() {

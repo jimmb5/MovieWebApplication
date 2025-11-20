@@ -1,10 +1,10 @@
 import { useParams } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
-import "./Settings.css";
+import { useAuth } from "../../contexts/AuthContext";
+import "../Settings.css";
 import { useState, useEffect } from "react";
-import { useToast } from "../contexts/ToastContext";
+import { useToast } from "../../contexts/ToastContext";
 import { useNavigate } from "react-router-dom";
-import ProfileSidebar from "../components/profile/ProfileSidebar";
+import ProfileSidebar from "../../components/profile/ProfileSidebar";
 
 function ProfileSettings() {
   const { username } = useParams();

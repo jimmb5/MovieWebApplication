@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
-import ProfileSidebar from "../components/profile/ProfileSidebar";
+import { useAuth } from "../../contexts/AuthContext";
+import ProfileSidebar from "../../components/profile/ProfileSidebar";
 import "./Favorites.css";
 
 function Favorites() {
