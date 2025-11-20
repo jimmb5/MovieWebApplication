@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
-import { useToast } from "../contexts/ToastContext";
+import { useAuth } from "../../contexts/AuthContext";
+import { useToast } from "../../contexts/ToastContext";
 import { FaUser, FaSignOutAlt, FaUserCircle, FaCog, FaUsers, FaStar } from "react-icons/fa";
 import "./Modal.css";
 

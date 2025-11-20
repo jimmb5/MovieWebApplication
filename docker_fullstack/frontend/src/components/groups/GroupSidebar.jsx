@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { FaUsers, FaInfoCircle, FaUserFriends, FaCog, FaUserPlus, FaSignOutAlt } from "react-icons/fa";
 import "./GroupSidebar.css";
-import { useGroup } from "../contexts/GroupContext";
-import ConfirmationModal from "./ConfirmationModal";
+import { useGroup } from "../../contexts/GroupContext";
+import ConfirmationModal from "../modals/ConfirmationModal";
 
 function GroupSidebar({ group }) {
   const { groupId } = useParams();

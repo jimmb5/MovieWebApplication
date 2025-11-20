@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useGroup } from "../contexts/GroupContext";
-import GroupSidebar from "../components/GroupSidebar";
-import ConfirmationModal from "../components/ConfirmationModal";
+import GroupSidebar from "../components/groups/GroupSidebar";
+import ConfirmationModal from "../components/modals/ConfirmationModal";
 import { FaEllipsisV } from "react-icons/fa";
 import "./Group.css";
 

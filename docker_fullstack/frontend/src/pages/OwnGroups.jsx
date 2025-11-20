@@ -2,8 +2,8 @@ import { useParams, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useToast } from "../contexts/ToastContext";
-import ProfileSidebar from "../components/ProfileSidebar";
-import CreateGroup from "../components/CreateGroup";
+import ProfileSidebar from "../components/profile/ProfileSidebar";
+import CreateGroup from "../components/groups/CreateGroup";
 import "./OwnGroups.css";
 
 function Groups() {

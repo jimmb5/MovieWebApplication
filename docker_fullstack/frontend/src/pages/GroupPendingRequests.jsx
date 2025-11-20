@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useGroup } from "../contexts/GroupContext";
-import GroupSidebar from "../components/GroupSidebar";
+import GroupSidebar from "../components/groups/GroupSidebar";
 import "./Settings.css";
 import "./Group.css";
 

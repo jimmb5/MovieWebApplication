@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useToast } from "../contexts/ToastContext";
+import { useToast } from "../../contexts/ToastContext";
 import { FaUser, FaLock, FaTimes, FaEnvelope } from "react-icons/fa";
 import "./Modal.css";
 

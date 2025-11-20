@@ -1,8 +1,8 @@
 import { useState, useRef } from "react";
-import { useAuth } from "../contexts/AuthContext";
-import { useToast } from "../contexts/ToastContext";
+import { useAuth } from "../../contexts/AuthContext";
+import { useToast } from "../../contexts/ToastContext";
 import { FaUsers, FaTimes } from "react-icons/fa";
-import "./Modal.css";
+import "../modals/Modal.css";
 
 function CreateGroup({ isOpen, onClose, onGroupCreated }) {
   const [name, setName] = useState("");

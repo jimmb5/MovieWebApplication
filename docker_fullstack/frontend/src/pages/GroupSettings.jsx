@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useGroup } from "../contexts/GroupContext";
 import { useToast } from "../contexts/ToastContext";
-import GroupSidebar from "../components/GroupSidebar";
+import GroupSidebar from "../components/groups/GroupSidebar";
 import "./Settings.css";
 
 function GroupSettings() {
