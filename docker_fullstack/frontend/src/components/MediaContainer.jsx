@@ -10,7 +10,7 @@ export default function MediaContainer({ title, mediaItems }) {
         {mediaItems.map((item) => (
           <MediaCard
             key={item.id}
-            title={item.title}
+            title={item.title || item.name}
             poster={item.poster_path}
           />
         ))}

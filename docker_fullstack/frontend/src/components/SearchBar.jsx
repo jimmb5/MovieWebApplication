@@ -11,7 +11,7 @@ export default function SearchBar({ setResults, setShowResults }) {
       axios
         .get(`http://localhost:3001/movie/search?query=${debouncedQuery}`)
         .then((response) => {
-          setResults(response.data);
+          setResults(response.data.results);
           setShowResults(true);
         })
         .catch((error) => {
@@ -26,7 +26,7 @@ export default function SearchBar({ setResults, setShowResults }) {
     <div className="search-bar">
       <input
         type="search"
-        placeholder="Search Movies"
+        placeholder="Search movies and shows by title, actor, or genre"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
