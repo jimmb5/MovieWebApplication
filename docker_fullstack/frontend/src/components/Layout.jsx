@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "./CardNav";
-import LoginModal from "./LoginModal";
-import RegisterModal from "./RegisterModal";
-import UserModal from "./UserModal";
+import LoginModal from "./modals/LoginModal";
+import RegisterModal from "./modals/RegisterModal";
+import UserModal from "./modals/UserModal";
 import { useAuth } from "../contexts/AuthContext";
-import "./Modal.css";
+import "./modals/Modal.css";
 import "./Layout.css";
 
 function Layout() {

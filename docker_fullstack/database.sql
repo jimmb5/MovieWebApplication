@@ -39,6 +39,31 @@ CREATE TABLE group_join_requests (
   UNIQUE (group_id, user_id)
 );
 
+-- group posts
+CREATE TABLE group_posts (
+  id              uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  group_id        uuid NOT NULL REFERENCES groups(id) ON DELETE CASCADE,
+  author_id       uuid NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  movie_tmdb_id   int,
+  description     text,
+  created_at      timestamptz NOT NULL DEFAULT now(),
+  updated_at      timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE INDEX group_posts_group_idx ON group_posts(group_id);
+
+-- group post comments
+CREATE TABLE group_post_comments (
+  id              uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  group_post_id   uuid NOT NULL REFERENCES group_posts(id) ON DELETE CASCADE,
+  author_id       uuid NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  comment            text NOT NULL,
+  created_at      timestamptz NOT NULL DEFAULT now(),
+  updated_at      timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE INDEX group_post_comments_post_idx ON group_post_comments(group_post_id);
+
 -- movies
 CREATE TABLE movies (
   id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),

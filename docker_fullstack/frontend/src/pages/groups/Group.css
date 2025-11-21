@@ -1,0 +1,161 @@
+.group-page {
+  min-height: 100vh;
+  padding: var(--large-padding);
+  padding-top: calc(2em + 60px + var(--large-padding));
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.group-content {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 3rem;
+  align-items: start;
+  padding: var(--medium-padding);
+}
+
+.group-sidebar-column {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.group-content-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+}
+
+.group-right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 320px;
+}
+
+@media (max-width: 768px) {
+  .group-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .group-sidebar-column {
+    width: 100%;
+  }
+  
+  .group-content-main {
+    width: 100%;
+  }
+
+  .group-right-column {
+    width: 100%;
+  }
+}
+
+
+
+.group-header {
+  margin-bottom: 2rem;
+}
+
+.group-header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.group-header p {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.group-body {
+  width: 100%;
+}
+
+.group-posts-list {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+}
+
+.group-info {
+  padding: 0.5rem 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.group-info h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--text-color);
+}
+
+.group-info p {
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.group-members {
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.group-members h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--text-color);
+}
+
+.group-members-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.group-member-item {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: relative;
+}
+
+.group-member-item:hover {
+  padding: 0.5rem 0;
+}
+
+.group-member-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.group-member-username {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-color);
+  margin: 0;
+}
+
+.group-member-role {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+  text-transform: capitalize;
+}
+
+.group-member-joined {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+}
+
+.group-member-menu {
+  margin-left: auto;
+}
+
+
+

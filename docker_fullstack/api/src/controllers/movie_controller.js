@@ -23,3 +23,22 @@ export async function getNowPlayingMovies(req, res, next) {
     res.status(500).json({ message: "Virhe haettaessa elokuvia" });
   }
 }
+
+export async function getMovieById(req, res, next) {
+  try {
+    const { movieId } = req.params;
+    const response = await axios.get(
+      `https://api.themoviedb.org/3/movie/${movieId}`,
+      {
+        params: {
+          api_key: process.env.TMDB_API_KEY,
+          language: "fi-FI",
+        },
+      }
+    );
+
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({ message: "Virhe haettaessa elokuvaa" });
+  }
+}

@@ -14,6 +14,7 @@ export function GroupProvider({ children }) {
   const [group, setGroup] = useState(null);
   const [members, setMembers] = useState([]);
   const [joinRequests, setJoinRequests] = useState([]);
+  const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isMember, setIsMember] = useState(true);
 
@@ -21,6 +22,7 @@ export function GroupProvider({ children }) {
     if (groupId && accessToken) {
       fetchGroup();
       fetchMembers();
+      fetchPosts();
     }
   }, [groupId, accessToken]);
 
@@ -112,6 +114,64 @@ export function GroupProvider({ children }) {
       setJoinRequests(data);
     } catch (error) {
       console.error("Error fetching join requests:", error);
+    }
+  };
+
+  const fetchPosts = async () => {
+    if (!accessToken || !groupId) {
+      return;
+    }
+
+    try {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/groups/${groupId}/posts`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${accessToken}`
+        },
+        credentials: "include",
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch posts");
+      }
+
+      const data = await res.json();
+      setPosts(data);
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+      addToast("Failed to load posts", "error");
+    }
+  };
+
+  const createPost = async (description, movieTmdbId) => {
+    if (!accessToken || !groupId) return false;
+
+    try {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/groups/${groupId}/create-post`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${accessToken}`
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          description: description || null,
+          movie_tmdb_id: movieTmdbId || null
+        }),
+      });
+
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.error); 
+      }
+
+      addToast("Post created successfully", "success");
+      fetchPosts(); // päivitetään postaukset
+      return true;
+    } catch (error) {
+      console.error("Error creating post:", error);
+      addToast("Failed to create post", "error");
+      return false;
     }
   };
 
@@ -381,11 +441,14 @@ export function GroupProvider({ children }) {
     group,
     members,
     joinRequests,
+    posts,
     loading,
     isMember,
     fetchGroup,
     fetchMembers,
     fetchJoinRequests,
+    fetchPosts,
+    createPost,
     getCurrentUserRole,
     canManageMember,
     canRemoveMember,
