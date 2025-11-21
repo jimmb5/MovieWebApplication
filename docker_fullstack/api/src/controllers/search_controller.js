@@ -6,7 +6,6 @@ let cachedGenres = null;
 
 async function findGenreId(searchTerm) {
   if (!cachedGenres) {
-    console.log("Http request made");
     const fiGenres = await axios.get(
       "https://api.themoviedb.org/3/genre/movie/list",
       {
@@ -39,7 +38,6 @@ async function findGenreId(searchTerm) {
 
     cachedGenres = mergedGenres;
   } else {
-    console.log("Cache used");
   }
 
   const match = cachedGenres.find(
@@ -60,7 +58,6 @@ async function searchMoviesByName(searchTerm) {
         query: searchTerm,
         include_adult: false,
         language: "en-US",
-        region: "FI",
         page: 1,
       },
     }
@@ -76,7 +73,6 @@ async function searchByGenreId(genreId) {
         api_key: process.env.TMDB_API_KEY,
         include_adult: false,
         language: "en-US",
-        region: "FI",
         page: 1,
         with_genres: genreId,
       },
@@ -86,27 +82,44 @@ async function searchByGenreId(genreId) {
 }
 
 async function searchByPersonName(searchTerm) {
-  const person = await axios.get("https://api.themoviedb.org/3/search/person", {
-    params: {
-      api_key: process.env.TMDB_API_KEY,
-      query: searchTerm,
-    },
-  });
+  try {
+    const response = await axios.get(
+      "https://api.themoviedb.org/3/search/person",
+      {
+        params: {
+          api_key: process.env.TMDB_API_KEY,
+          query: searchTerm,
+        },
+      }
+    );
 
-  const personId = person.data.results[0].id;
-  if (!person) return [];
+    const persons = response.data.results;
+    if (!persons || persons.length === 0) return [];
 
-  const credits = await axios.get(
-    `https://api.themoviedb.org/3/person/${personId}/movie_credits`,
-    {
-      params: {
-        api_key: process.env.TMDB_API_KEY,
-        language: "en-US",
-      },
-    }
-  );
+    let person = persons.find((p) =>
+      p.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
-  return credits.data.cast;
+    if (!person) person = persons[0];
+
+    const personId = person.id;
+    if (!personId) return [];
+
+    const credits = await axios.get(
+      `https://api.themoviedb.org/3/person/${personId}/movie_credits`,
+      {
+        params: {
+          api_key: process.env.TMDB_API_KEY,
+          language: "en-US",
+        },
+      }
+    );
+
+    return credits.data.cast ?? [];
+  } catch (error) {
+    console.error("Person search error:", error.message);
+    return [];
+  }
 }
 
 export async function smartSearch(req, res, next) {
@@ -114,18 +127,40 @@ export async function smartSearch(req, res, next) {
 
   try {
     const genreId = await findGenreId(searchTerm);
+
     if (genreId) {
       const results = await searchByGenreId(genreId);
       return res.json(results);
     }
 
-    const personResults = await searchByPersonName(searchTerm);
-    if (personResults.length > 0) return res.json(personResults);
+    const [movieResults, personResults] = await Promise.all([
+      searchMoviesByName(searchTerm),
+      searchByPersonName(searchTerm),
+    ]);
 
-    const movieResults = await searchMoviesByName(searchTerm);
+    let results = [];
 
-    return res.json(movieResults);
+    if (movieResults?.length > 0) {
+      results = results.concat(movieResults);
+    }
+
+    if (personResults?.length > 0) {
+      results = results.concat(personResults);
+    }
+
+    const unique = [];
+    const ids = new Set();
+
+    for (const movie of results) {
+      if (movie && movie.id && !ids.has(movie.id)) {
+        ids.add(movie.id);
+        unique.push(movie);
+      }
+    }
+
+    return res.json(unique);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Virhe haussa" });
   }
 }
