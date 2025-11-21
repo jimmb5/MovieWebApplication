@@ -7,6 +7,8 @@ import UserModal from "./modals/UserModal";
 import { useAuth } from "../contexts/AuthContext";
 import "./modals/Modal.css";
 import "./Layout.css";
+import "./Footer.css";
+import Footer from "./Footer.jsx";
 
 function Layout() {
   const [IsLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -107,6 +109,7 @@ function Layout() {
       <div className="layout-content">
         <Outlet />
       </div>
+      <Footer />
       {(IsLoginModalOpen || showRegister) && !user && (
         <div
           className="modal-overlay"
