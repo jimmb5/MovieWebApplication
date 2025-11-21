@@ -3,7 +3,11 @@ import { useDebounce } from "use-debounce";
 import axios from "axios";
 import "./SearchBar.css";
 
-export default function SearchBar({ setResults, setShowResults }) {
+export default function SearchBar({
+  setSearchTerm,
+  setResults,
+  setShowResults,
+}) {
   const [query, setQuery] = useState("");
   const [debouncedQuery] = useDebounce(query, 500);
   useEffect(() => {
@@ -11,6 +15,7 @@ export default function SearchBar({ setResults, setShowResults }) {
       axios
         .get(`http://localhost:3001/search/movies?query=${debouncedQuery}`)
         .then((response) => {
+          setSearchTerm(debouncedQuery);
           setResults(response.data);
           setShowResults(true);
         })
@@ -26,7 +31,7 @@ export default function SearchBar({ setResults, setShowResults }) {
     <div className="search-bar">
       <input
         type="search"
-        placeholder="Search movies and shows by title, actor, or genre"
+        placeholder="Search movies by title, cast member or genre"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />

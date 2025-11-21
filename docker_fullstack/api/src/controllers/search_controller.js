@@ -85,6 +85,30 @@ async function searchByGenreId(genreId) {
   return response.data.results;
 }
 
+async function searchByPersonName(searchTerm) {
+  const person = await axios.get("https://api.themoviedb.org/3/search/person", {
+    params: {
+      api_key: process.env.TMDB_API_KEY,
+      query: searchTerm,
+    },
+  });
+
+  const personId = person.data.results[0].id;
+  if (!person) return [];
+
+  const credits = await axios.get(
+    `https://api.themoviedb.org/3/person/${personId}/movie_credits`,
+    {
+      params: {
+        api_key: process.env.TMDB_API_KEY,
+        language: "en-US",
+      },
+    }
+  );
+
+  return credits.data.cast;
+}
+
 export async function smartSearch(req, res, next) {
   const searchTerm = req.query.query;
 
@@ -95,6 +119,9 @@ export async function smartSearch(req, res, next) {
       return res.json(results);
     }
 
+    const personResults = await searchByPersonName(searchTerm);
+    if (personResults.length > 0) return res.json(personResults);
+
     const movieResults = await searchMoviesByName(searchTerm);
 
     return res.json(movieResults);
@@ -102,48 +129,3 @@ export async function smartSearch(req, res, next) {
     res.status(500).json({ message: "Virhe haussa" });
   }
 }
-
-// export async function findGenre(req, res, next) {
-//   if (cachedGenres) {
-//     console.log("Cache used");
-//     res.json(cachedGenres);
-//   } else {
-//     try {
-//       console.log("Http request made");
-//       const fiGenres = await axios.get(
-//         "https://api.themoviedb.org/3/genre/movie/list",
-//         {
-//           params: {
-//             api_key: process.env.TMDB_API_KEY,
-//             language: "fi-FI",
-//           },
-//         }
-//       );
-
-//       const enGenres = await axios.get(
-//         "https://api.themoviedb.org/3/genre/movie/list",
-//         {
-//           params: {
-//             api_key: process.env.TMDB_API_KEY,
-//             language: "en-US",
-//           },
-//         }
-//       );
-
-//       const mergedGenres = fiGenres.data.genres.map((fiGenre) => {
-//         const enMatch = enGenres.data.genres.find((en) => en.id === fiGenre.id);
-
-//         return {
-//           id: fiGenre.id,
-//           fi: fiGenre.name,
-//           en: enMatch?.name ?? null,
-//         };
-//       });
-
-//       cachedGenres = mergedGenres;
-//       res.json(cachedGenres);
-//     } catch (error) {
-//       res.status(500).json({ message: "Virhe haettaessa genrejä" });
-//     }
-//   }
-// }

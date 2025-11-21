@@ -1,12 +1,8 @@
 import { Router } from "express";
-import {
-  //   findGenre,
-  smartSearch,
-} from "../controllers/search_controller.js";
+import { smartSearch } from "../controllers/search_controller.js";
 
 const searchRouter = Router();
 
-// searchRouter.get("/genre", findGenre);
-searchRouter.get("/smart", smartSearch);
+searchRouter.get("/movies", smartSearch);
 
 export default searchRouter;
