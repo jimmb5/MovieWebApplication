@@ -9,9 +9,9 @@ export default function SearchBar({ setResults, setShowResults }) {
   useEffect(() => {
     if (debouncedQuery) {
       axios
-        .get(`http://localhost:3001/movie/search?query=${debouncedQuery}`)
+        .get(`http://localhost:3001/search/movies?query=${debouncedQuery}`)
         .then((response) => {
-          setResults(response.data.results);
+          setResults(response.data);
           setShowResults(true);
         })
         .catch((error) => {
