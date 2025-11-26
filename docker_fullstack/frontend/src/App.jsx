@@ -51,7 +51,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/mediadetails" element={<MediaDetails />} />
+        <Route path="/movie/:id" element={<MediaDetails />} />
         <Route
           path="/:username"
           element={

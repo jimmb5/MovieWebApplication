@@ -1,14 +1,36 @@
 import React from "react";
+import { useLocation, useParams } from "react-router-dom";
 import "./MediaDetails.css";
 
 export default function MediaDetails() {
-  const title = "Batman";
+  const { id } = useParams();
+  const location = useLocation();
+  const mediaItem = location.state;
+  const title = mediaItem.title || mediaItem.name;
+  const overview = mediaItem.overview;
 
   return (
-    <div className="media-details">
+    <div
+      className="media-details"
+      style={{
+        backgroundImage: `
+    linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)),
+    url(https://image.tmdb.org/t/p/original${mediaItem.backdrop_path})
+  `,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backgroundAttachment: "fixed",
+      }}
+    >
       <main className="media-details-content">
         <div className="details-layout">
-          <div className="poster">posteri</div>
+          <div className="poster">
+            <img
+              src={`https://image.tmdb.org/t/p/w500${mediaItem.poster_path}`}
+              alt={title}
+            />
+          </div>
 
           <div className="details">
             <div className="header-row">
@@ -26,12 +48,7 @@ export default function MediaDetails() {
 
             <div className="description-row">
               <h2>Overview</h2>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Dolores eius consequatur sint. Dolores ullam ducimus recusandae
-                architecto nostrum quam doloribus, facere enim ab fuga, totam
-                laboriosam facilis amet fugit quod!'
-              </p>
+              <p>{overview}</p>
             </div>
 
             <div className="info-table-row">
