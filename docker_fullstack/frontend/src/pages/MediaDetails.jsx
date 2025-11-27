@@ -1,13 +1,38 @@
-import React from "react";
-import { useLocation, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import "./MediaDetails.css";
+import axios from "axios";
 
 export default function MediaDetails() {
   const { id } = useParams();
-  const location = useLocation();
-  const mediaItem = location.state;
-  const title = mediaItem.title || mediaItem.name;
+
+  const [mediaItem, setMediaItem] = useState({});
+  const title = mediaItem.title;
   const overview = mediaItem.overview;
+  const backdrop = mediaItem.backdrop;
+  const poster = mediaItem.poster;
+  const releaseYear = mediaItem.year;
+  const cast = mediaItem.cast;
+  const director = mediaItem.director;
+  const writers = mediaItem.writers;
+  const runtime = mediaItem.runtime;
+  const genres = mediaItem.genres;
+  const ageRating = mediaItem.ageRating;
+
+  function addSpace(items) {
+    return items?.map((item) => <span key={item}>{item}</span>);
+  }
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:3001/movie/${id}`)
+      .then((response) => {
+        setMediaItem(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
   return (
     <div
@@ -15,7 +40,7 @@ export default function MediaDetails() {
       style={{
         backgroundImage: `
     linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)),
-    url(https://image.tmdb.org/t/p/original${mediaItem.backdrop_path})
+    url(https://image.tmdb.org/t/p/original${backdrop})
   `,
         backgroundSize: "cover",
         backgroundPosition: "center",
@@ -26,10 +51,7 @@ export default function MediaDetails() {
       <main className="media-details-content">
         <div className="details-layout">
           <div className="poster">
-            <img
-              src={`https://image.tmdb.org/t/p/w500${mediaItem.poster_path}`}
-              alt={title}
-            />
+            <img src={`https://image.tmdb.org/t/p/w500${poster}`} alt={title} />
           </div>
 
           <div className="details">
@@ -39,11 +61,11 @@ export default function MediaDetails() {
             </div>
 
             <div className="meta-row darker-text">
-              <span>year</span>
+              <span>{releaseYear}</span>
 
-              <span>duration</span>
+              <span>{runtime}</span>
 
-              <span>ageRating</span>
+              <span>{ageRating}</span>
             </div>
 
             <div className="description-row">
@@ -53,16 +75,16 @@ export default function MediaDetails() {
 
             <div className="info-table-row">
               <span className="darker-text">Starring</span>
-              <span>cast</span>
+              <span className="cast-crew-genres">{addSpace(cast)}</span>
 
               <span className="darker-text">Director</span>
-              <span>director</span>
+              <span className="cast-crew-genres">{director}</span>
 
-              <span className="darker-text">Writer</span>
-              <span>writer</span>
+              <span className="darker-text">Writers</span>
+              <span className="cast-crew-genres">{addSpace(writers)}</span>
 
               <span className="darker-text">Genre</span>
-              <span>genre</span>
+              <span className="cast-crew-genres">{addSpace(genres)}</span>
             </div>
 
             <div className="rating-row">tähtiarvostelu</div>
