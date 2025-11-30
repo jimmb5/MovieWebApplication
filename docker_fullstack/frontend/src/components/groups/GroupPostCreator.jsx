@@ -22,7 +22,7 @@ function GroupPostCreator() {
   useEffect(() => {
     if (showMovieSearch && debouncedQuery) {
       axios
-        .get(`${process.env.REACT_APP_API_URL}/movie/search?query=${debouncedQuery}`)
+        .get(`${process.env.REACT_APP_API_URL}/search/movies?query=${encodeURIComponent(debouncedQuery)}`)
         .then((response) => {
           setMovieResults(response.data);
         })
