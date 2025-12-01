@@ -2,7 +2,13 @@ import { Link } from "react-router-dom";
 import "./NavBar.css";
 import { FaUser } from "react-icons/fa";
 
-function NavBar() {
+function NavBar({ onUserIconClick, userButtonRef }) {
+  const handleUserIconClick = () => {
+    if (onUserIconClick) {
+      onUserIconClick();
+    }
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-brand">
@@ -10,15 +16,14 @@ function NavBar() {
           Movie app
         </Link>
       </div>
-      <div ClassName="navbar-link"></div>
+      <div className="navbar-link"></div>
       {/* <Link to = "/" className="nav-link">Home</Link> */}
 
       <button
+        ref={userButtonRef}
         type="button"
         className="navbar-account"
-        onClick={() => {
-          onUserIconClick();
-        }}
+        onClick={handleUserIconClick}
       >
         <FaUser size={20} />
       </button>

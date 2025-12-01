@@ -25,10 +25,23 @@ function Layout() {
       window.history.replaceState({}, document.title);
     }
   }, [location.state, user]);
+
+  const handleUserIconClick = () => {
+    if (user) {
+      // Jos käyttäjä on kirjautunut, avaa user modal
+      setIsUserDropdownOpen(true);
+    } else {
+      // Jos käyttäjä ei ole kirjautunut, avaa login modal
+      setIsLoginModalOpen(true);
+    }
+  };
   
   return (
     <>
-      <NavBar/>
+      <NavBar 
+      onUserIconClick={handleUserIconClick} 
+      userButtonRef={userButtonRef}
+      />
       <div className="layout-content">
         <Outlet />
       </div>
