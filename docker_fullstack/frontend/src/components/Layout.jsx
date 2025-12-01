@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import Navbar from "./CardNav";
+import NavBar from "./NavBar";
 import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
 import UserModal from "./UserModal";
@@ -25,85 +25,10 @@ function Layout() {
       window.history.replaceState({}, document.title);
     }
   }, [location.state, user]);
-
-  // Täällä olevat näkyy kaikilla sivuilla
-  const items = [
-    {
-      label: "Movies",
-      bgColor: "#212121",
-      textColor: "#fff",
-      links: [
-        {
-          label: "Top Rated",
-          href: "/movies/top-rated",
-          ariaLabel: "Top Rated Movies",
-        },
-        {
-          label: "Popular",
-          href: "/movies/popular",
-          ariaLabel: "Popular Movies",
-        },
-        {
-          label: "Trending",
-          href: "/movies/trending",
-          ariaLabel: "Trending Movies",
-        },
-      ],
-    },
-    {
-      label: "TV Shows",
-      bgColor: "#232323",
-      textColor: "#fff",
-      links: [
-        {
-          label: "Top Rated",
-          href: "/tv-shows/top-rated",
-          ariaLabel: "Top Rated TV Shows",
-        },
-        {
-          label: "Popular",
-          href: "/tv-shows/popular",
-          ariaLabel: "Popular TV Shows",
-        },
-        {
-          label: "Trending",
-          href: "/tv-shows/trending",
-          ariaLabel: "Trending TV Shows",
-        },
-      ],
-    },
-    {
-      label: "Profile & Groups",
-      bgColor: "#252525",
-      textColor: "#fff",
-      links: [
-        { label: "Favorites", href: "/favorites", ariaLabel: "Favorites" },
-        { label: "Groups", href: "/groups", ariaLabel: "Groups" },
-        { label: "Settings", href: "/settings", ariaLabel: "Settings" },
-      ],
-    },
-  ];
-
+  
   return (
     <>
-      <Navbar
-        logo={"/logo.svg"}
-        logoAlt="Logo"
-        items={items}
-        baseColor="#111111"
-        menuColor="#fff"
-        buttonBgColor="#111111"
-        buttonTextColor="#fff"
-        ease="power3.out"
-        onUserIconClick={() => {
-          if (user) {
-            setIsUserDropdownOpen(!isUserDropdownOpen);
-          } else {
-            setIsLoginModalOpen(true);
-          }
-        }}
-        userButtonRef={userButtonRef}
-      />
+      <NavBar/>
       <div className="layout-content">
         <Outlet />
       </div>
