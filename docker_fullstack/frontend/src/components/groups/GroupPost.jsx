@@ -337,9 +337,9 @@ function GroupPost({ post }) {
         {movieDetails && (
           <div className="group-post-movie">
             <div className="group-post-movie-poster-wrapper">
-              {movieDetails.poster_path ? (
+              {movieDetails.poster? (
                 <img
-                  src={`https://image.tmdb.org/t/p/w154${movieDetails.poster_path}`}
+                  src={`https://image.tmdb.org/t/p/w154${movieDetails.poster}`}
                   alt={movieDetails.title}
                   className="group-post-movie-poster"
                 />
@@ -351,9 +351,9 @@ function GroupPost({ post }) {
             </div>
             <div className="group-post-movie-info">
               <h4 className="group-post-movie-title">{movieDetails.title}</h4>
-              {movieDetails.release_date && (
+              {movieDetails.year && (
                 <p className="group-post-movie-year">
-                  {new Date(movieDetails.release_date).getFullYear()}
+                  {new Date(movieDetails.year).getFullYear()}
                 </p>
               )}
               {movieDetails.overview ? (

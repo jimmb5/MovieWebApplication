@@ -97,10 +97,8 @@ function formatMovieData(raw) {
     writers: getWriters(raw.credits.crew),
     genres: getGenres(raw.genres),
     poster: raw.poster_path,
-    poster_path: raw.poster_path,
     backdrop: raw.backdrop_path,
     year: raw.release_date?.slice(0, -6),
-    release_date: raw.release_date,
     ageRating: getAgeRating(raw.release_dates),
     runtime: formatRuntime(raw.runtime),
   };

@@ -64,31 +64,23 @@ CREATE TABLE group_post_comments (
 
 CREATE INDEX group_post_comments_post_idx ON group_post_comments(group_post_id);
 
--- movies
-CREATE TABLE movies (
-  id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  tmdb_id     int UNIQUE,
-  name        text NOT NULL,
-  release_year int,
-  poster_url  text,
-  last_time_fetched timestamptz
-);
 
 -- user movie ratings (only one rating per user per movie)
+-- assumes rating is optional
 CREATE TABLE user_movie_ratings (
   user_id     uuid NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  movie_id    uuid NOT NULL REFERENCES movies(id) ON DELETE CASCADE,
-  rating      int NOT NULL CHECK (rating >= 1 AND rating <= 10),
+  movie_tmdb_id int NOT NULL,
+  rating      int,
   comment     text,
   created_at  timestamptz NOT NULL DEFAULT now(),
-  PRIMARY KEY (user_id, movie_id)
+  PRIMARY KEY (user_id, movie_tmdb_id)
 );
 
 -- user favorited movies
 CREATE TABLE favourites (
   user_id     uuid NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  movie_id    uuid NOT NULL REFERENCES movies(id) ON DELETE CASCADE,
+  movie_tmdb_id int NOT NULL,
   added_at      timestamptz NOT NULL DEFAULT now(),
-  PRIMARY KEY (user_id, movie_id)
+  PRIMARY KEY (user_id, movie_tmdb_id)
 );
 
