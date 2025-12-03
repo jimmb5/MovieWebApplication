@@ -1,12 +1,16 @@
 import { useState, useRef, useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
+
 import NavBar from "./NavBar";
 import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
 import UserModal from "./UserModal";
+
 import { useAuth } from "../contexts/AuthContext";
-import "./Modal.css";
+import "./modals/Modal.css";
 import "./Layout.css";
+import "./Footer.css";
+import Footer from "./Footer.jsx";
 
 function Layout() {
   const [IsLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -45,6 +49,7 @@ function Layout() {
       <div className="layout-content">
         <Outlet />
       </div>
+      <Footer />
       {(IsLoginModalOpen || showRegister) && !user && (
         <div
           className="modal-overlay"

@@ -7,7 +7,7 @@ import userRouter from "./routers/user_router.js";
 
 import groupsRouter from "./routers/groups_router.js";
 import movieRouter from "./routers/movie_router.js";
-
+import searchRouter from "./routers/search_router.js";
 
 const app = express();
 const port = process.env.PORT;
@@ -30,6 +30,7 @@ app.get("/", async (req, res) => {
 // Esim. tmdb api kutsut tähän
 app.use("/user", userRouter);
 app.use("/movie", movieRouter);
+app.use("/search", searchRouter);
 
 // Suojatut reitit (kaikki endpointit vaativat autentikoinnin)
 app.use("/groups", groupsRouter);

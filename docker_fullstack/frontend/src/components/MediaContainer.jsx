@@ -8,11 +8,7 @@ export default function MediaContainer({ title, mediaItems }) {
       <h2>{title}</h2>
       <div className="media-grid">
         {mediaItems.map((item) => (
-          <MediaCard
-            key={item.id}
-            title={item.title}
-            poster={item.poster_path}
-          />
+          <MediaCard key={item.id} mediaItem={item} />
         ))}
       </div>
     </section>
