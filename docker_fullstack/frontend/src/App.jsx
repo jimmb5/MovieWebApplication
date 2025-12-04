@@ -12,12 +12,14 @@ import Group from "./pages/groups/Group";
 import GroupSettings from "./pages/groups/GroupSettings";
 import GroupMembers from "./pages/groups/GroupMembers";
 import GroupPendingRequests from "./pages/groups/GroupPendingRequests";
+import Movies from "./pages/Movies";
 
 function App() {
   return (
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
+        <Route path="/movies" element={<Movies />} />
         <Route path="/groups" element={<PublicGroups />} />
         <Route
           path="/groups/:groupId"
