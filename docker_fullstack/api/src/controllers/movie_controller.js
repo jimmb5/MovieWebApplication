@@ -24,6 +24,35 @@ export async function getNowPlayingMovies(req, res, next) {
   }
 }
 
+export async function getPopularMovies(req, res, next) {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const response = await axios.get(
+      "https://api.themoviedb.org/3/movie/popular",
+      {
+        params: {
+          api_key: process.env.TMDB_API_KEY,
+          include_adult: false,
+          language: "en-US",
+          page: page,
+        },
+      }
+    );
+
+    const formattedResults = response.data.results.map((movie) =>
+      formatPopularMovieData(movie)
+    );
+
+    res.json({
+      results: formattedResults,
+      page: response.data.page,
+      totalPages: response.data.total_pages,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Virhe haettaessa elokuvia" });
+  }
+}
+
 export async function getMovieById(req, res, next) {
   try {
     const { movieId } = req.params;
@@ -101,5 +130,16 @@ function formatMovieData(raw) {
     year: raw.release_date?.slice(0, -6),
     ageRating: getAgeRating(raw.release_dates),
     runtime: formatRuntime(raw.runtime),
+  };
+}
+
+function formatPopularMovieData(raw) {
+  return {
+    id: raw.id,
+    title: raw.title,
+    overview: raw.overview,
+    poster: raw.poster_path,
+    backdrop: raw.backdrop_path,
+    year: raw.release_date?.slice(0, -6),
   };
 }

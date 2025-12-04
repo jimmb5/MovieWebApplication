@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import "../Settings.css";
+import "./Settings.css";
 import { useState, useEffect } from "react";
 import { useToast } from "../../contexts/ToastContext";
 import { useNavigate } from "react-router-dom";
