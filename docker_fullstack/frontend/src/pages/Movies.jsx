@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "./Movies.css";
@@ -9,10 +9,12 @@ export default function Movies() {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const lastMovieElementRef = useRef(null);
+  const loadingRef = useRef(false);
 
-  const fetchMovies = async (pageNum) => {
-    if (loading) return;
+  const fetchMovies = useCallback(async (pageNum) => {
+    if (loadingRef.current) return;
     
+    loadingRef.current = true;
     setLoading(true);
     try {
       const response = await axios.get(
@@ -26,26 +28,27 @@ export default function Movies() {
       }
       
       setHasMore(pageNum < response.data.totalPages);
+      setCurrentPage(pageNum);
     } catch (error) {
       console.error("Error fetching movies:", error);
     } finally {
       setLoading(false);
+      loadingRef.current = false;
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchMovies(1);
-  }, []);
+  }, [fetchMovies]);
 
- // infinite scroll
+  // infinite scroll
   useEffect(() => {
-    if (!hasMore || loading || currentPage === 1) return;
+    if (!hasMore || loading || movies.length === 0) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && !loading && hasMore) {
+        if (entries[0].isIntersecting && !loadingRef.current && hasMore) {
           const nextPage = currentPage + 1;
-          setCurrentPage(nextPage);
           fetchMovies(nextPage);
         }
       },
@@ -62,7 +65,7 @@ export default function Movies() {
         observer.unobserve(currentRef);
       }
     };
-  }, [currentPage, hasMore, loading]);
+  }, [currentPage, hasMore, loading, fetchMovies, movies.length]);
 
 
   return (
