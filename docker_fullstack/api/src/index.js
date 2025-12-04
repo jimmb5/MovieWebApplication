@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import "dotenv/config";
-import { authenticateToken } from "./middleware/auth.js";
 import userRouter from "./routers/user_router.js";
 
 import groupsRouter from "./routers/groups_router.js";
@@ -26,13 +25,9 @@ app.get("/", async (req, res) => {
   res.send("Postgres API esimerkki");
 });
 
-// Suojaamattomat reitit ellei endpoint määrittele toisin
-// Esim. tmdb api kutsut tähän
 app.use("/user", userRouter);
 app.use("/movie", movieRouter);
 app.use("/search", searchRouter);
-
-// Suojatut reitit (kaikki endpointit vaativat autentikoinnin)
 app.use("/groups", groupsRouter);
 
 app.listen(port, () => {
