@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { useToast } from "../../contexts/ToastContext";
@@ -10,15 +10,17 @@ function UserModal({ onClose, buttonRef }) {
   const { addToast } = useToast();
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
+  const [position, setPosition] = useState({ top: 0, right: 0 });
 
   useEffect(() => {
     const updatePosition = () => {
-      if (buttonRef?.current && dropdownRef?.current) {
+      if (buttonRef?.current) {
         const buttonRect = buttonRef.current.getBoundingClientRect();
-        const dropdown = dropdownRef.current;
         
-        dropdown.style.top = `${buttonRect.bottom + 8}px`;
-        dropdown.style.right = `${window.innerWidth - buttonRect.right}px`;
+        setPosition({
+          top: buttonRect.bottom + 8,
+          right: window.innerWidth - buttonRect.right,
+        });
       }
     };
 
@@ -81,7 +83,15 @@ function UserModal({ onClose, buttonRef }) {
   };
 
   return (
-    <div ref={dropdownRef} className="user-dropdown" onClick={(e) => e.stopPropagation()}>
+    <div 
+      ref={dropdownRef} 
+      className="user-dropdown" 
+      onClick={(e) => e.stopPropagation()}
+      style={{
+        top: `${position.top}px`,
+        right: `${position.right}px`,
+      }}
+    >
       <div className="user-dropdown-header">
         <div className="user-dropdown-icon">
           <FaUser size={20} />
