@@ -16,17 +16,20 @@ function NavBar({ onUserIconClick, userButtonRef }) {
           Movie app
         </Link>
       </div>
-      <div className="navbar-link"></div>
-     <Link to = "/Groups" className="nav-link">Groups</Link>
-      <Link to = "/Favorites" className="nav-link">Favorites</Link>
+      <div className="navbar-usericon">
       <button
         ref={userButtonRef}
         type="button"
         className="navbar-account"
         onClick={handleUserIconClick}
       >
-        <FaUser size={20} />
+        <FaUser size={25} />
       </button>
+      </div>
+      <div className="navbar-links">
+     <Link to = "/Groups" className="nav-link">Groups</Link>
+      {/* <Link to = "/Favorites" className="nav-link">Favorites</Link> */}
+      </div>
     </nav>
   );
 }
