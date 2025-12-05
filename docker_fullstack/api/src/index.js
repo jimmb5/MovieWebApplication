@@ -35,6 +35,10 @@ app.use("/search", searchRouter);
 // Suojatut reitit (kaikki endpointit vaativat autentikoinnin)
 app.use("/groups", groupsRouter);
 
-app.listen(port, () => {
-  console.log(`Server is listening port ${port}`);
-});
+// Käynnistä serveri vain jos EI olla testimoodissa
+if (process.env.NODE_ENV !== "test") {
+  const port = process.env.PORT || 3001;
+  app.listen(port, () => console.log(`Server is listening on port ${port}`));
+}
+
+export default app;
