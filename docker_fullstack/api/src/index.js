@@ -30,6 +30,10 @@ app.use("/movie", movieRouter);
 app.use("/search", searchRouter);
 app.use("/groups", groupsRouter);
 
-app.listen(port, () => {
-  console.log(`Server is listening port ${port}`);
-});
+// Käynnistä serveri vain jos EI olla testimoodissa
+if (process.env.NODE_ENV !== "test") {
+  const port = process.env.PORT || 3001;
+  app.listen(port, () => console.log(`Server is listening on port ${port}`));
+}
+
+export default app;

@@ -21,6 +21,20 @@ services:
       - pgdata:/var/lib/postgresql/data
       - ./database.sql:/docker-entrypoint-initdb.d/database.sql:ro
 
+  db_test:
+    image: postgres:16
+    container_name: postgres_db_test
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: testuser
+      POSTGRES_PASSWORD: testpass
+      POSTGRES_DB: netdb_test
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata_test:/var/lib/postgresql/data
+      - ./database.sql:/docker-entrypoint-initdb.d/database.sql:ro
+
   frontend:
     build: ./frontend
     container_name: react_frontend
@@ -31,3 +45,4 @@ services:
 
 volumes:
   pgdata:
+  pgdata_test:
