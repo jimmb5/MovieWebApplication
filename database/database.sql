@@ -40,7 +40,8 @@ CREATE TABLE movies (
 CREATE TABLE user_movie_ratings (
   user_id     uuid NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   movie_id    uuid NOT NULL REFERENCES movies(id) ON DELETE CASCADE,
-  rating      int NOT NULL CHECK (rating >= 1 AND rating <= 10),
+  review_id   uuid NOT NULL REFERENCES reviews(id) ON DELETE CASCADE,
+  rating      int NOT NULL CHECK (rating >= 1 AND rating <= 5),
   comment     text,
   created_at  timestamptz NOT NULL DEFAULT now(),
   PRIMARY KEY (user_id, movie_id)
