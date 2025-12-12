@@ -49,7 +49,7 @@ async function findGenreId(searchTerm) {
   return match ? match.id : null;
 }
 
-async function searchMoviesByName(searchTerm) {
+async function searchMoviesByName(searchTerm, page) {
   const response = await axios.get(
     "https://api.themoviedb.org/3/search/movie",
     {
@@ -58,14 +58,14 @@ async function searchMoviesByName(searchTerm) {
         query: searchTerm,
         include_adult: false,
         language: "en-US",
-        page: 1,
+        page: page,
       },
     }
   );
   return response.data.results;
 }
 
-async function searchByGenreId(genreId) {
+async function searchByGenreId(genreId, page) {
   const response = await axios.get(
     "https://api.themoviedb.org/3/discover/movie",
     {
@@ -73,7 +73,7 @@ async function searchByGenreId(genreId) {
         api_key: process.env.TMDB_API_KEY,
         include_adult: false,
         language: "en-US",
-        page: 1,
+        page: page,
         with_genres: genreId,
       },
     }
@@ -124,17 +124,17 @@ async function searchByPersonName(searchTerm) {
 
 export async function smartSearch(req, res, next) {
   const searchTerm = req.query.query;
-
+  const page = parseInt(req.query.page) || 1;
   try {
     const genreId = await findGenreId(searchTerm);
 
     if (genreId) {
-      const results = await searchByGenreId(genreId);
+      const results = await searchByGenreId(genreId, page);
       return res.json(results);
     }
 
     const [movieResults, personResults] = await Promise.all([
-      searchMoviesByName(searchTerm),
+      searchMoviesByName(searchTerm, page),
       searchByPersonName(searchTerm),
     ]);
 

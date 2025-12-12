@@ -8,7 +8,7 @@ export default function NowPlaying() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/movie/now_playing")
+      .get(`${process.env.REACT_APP_API_URL}/movie/now_playing`)
       .then((response) => {
         setMovies(response.data);
       })
