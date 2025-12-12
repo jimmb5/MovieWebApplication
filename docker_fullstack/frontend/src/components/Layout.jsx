@@ -21,6 +21,9 @@ function Layout() {
   const location = useLocation();
   const [showRegister, setShowRegister] = useState(false);
 
+// Add this line right after getting user from context:
+  console.log("Logged-in user in Layout:", user);
+
   // avaa login jos tullaan protected routesta
   useEffect(() => {
     if (location.state?.openLogin && !user) {

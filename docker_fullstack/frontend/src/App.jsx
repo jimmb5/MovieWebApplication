@@ -78,14 +78,8 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route
-          path="/:username/favorites"
-          element={
-            <ProtectedRoute>
-              <Favorites />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/:username/favorites" element={<Favorites />} />
+
       </Route>
     </Routes>
   );
