@@ -15,7 +15,7 @@ Alustavan käyttöliittymä suunnitelman ensimmäinen versio. Koko käyttöliitt
 
 ## REST-dokumentaatio
 
-Projektimme rest dokumentaatio on tehty Postmanilla. Se löytyy kokonaisuudessaan täältä. Pyydettyihin endpointteihin on panostettu. <Linkki>
+Projektimme rest dokumentaatio on tehty Postmanilla. Se löytyy kokonaisuudessaan täältä. Pyydettyihin endpointteihin on panostettu. [Postman dokumentaatio](https://documenter.getpostman.com/view/42111295/2sB3dTtTz7)
 
 ## Kehitysjonon hallinta
 
