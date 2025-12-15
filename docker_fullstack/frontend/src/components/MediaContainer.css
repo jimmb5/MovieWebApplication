@@ -14,3 +14,10 @@
   gap: 1rem;
   margin-top: 1rem;
 }
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: #aaaaaa;
+  font-size: 1rem;
+}

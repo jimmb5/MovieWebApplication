@@ -1,30 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
-import axios from "axios";
 import "./SearchBar.css";
 
-export default function SearchBar({
-  setSearchTerm,
-  setResults,
-  setShowResults,
-}) {
+export default function SearchBar({ onSearch }) {
   const [query, setQuery] = useState("");
   const [debouncedQuery] = useDebounce(query, 500);
   useEffect(() => {
-    if (debouncedQuery) {
-      axios
-        .get(`http://localhost:3001/search/movies?query=${debouncedQuery}`)
-        .then((response) => {
-          setSearchTerm(debouncedQuery);
-          setResults(response.data);
-          setShowResults(true);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    } else {
-      setShowResults(false);
-    }
+    onSearch(debouncedQuery);
   }, [debouncedQuery]);
 
   return (
