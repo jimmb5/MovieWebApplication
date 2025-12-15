@@ -9,7 +9,7 @@ Tässä on projektin lopullinen tietokantakaavio. Se kuvaa tietokannan taulut ja
 
 ## Käyttöliittymäsuunnitelma
 
-Alustavan käyttöliittymä suunnitelman ensimmäinen versio. Koko käyttöliittymäsuunnitelman voi tarkastaa täältä: <Linkki>
+Alustavan käyttöliittymä suunnitelman ensimmäinen versio. Koko käyttöliittymäsuunnitelman voi tarkastaa täältä: [Käyttöliittymä suunnitelma](https://app.moqups.com/VE8o6p1VkqiQnMCTqAuJwyZJoJ2j1tl5/view/page/ad64222d5)
 
 ![Käyttöliittymä](./alustavakayttoliittyma.png)
 
