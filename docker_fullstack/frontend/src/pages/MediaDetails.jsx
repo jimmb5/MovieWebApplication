@@ -4,7 +4,6 @@ import "./MediaDetails.css";
 import axios from "axios";
 import { useAuth } from "../contexts/AuthContext";
 
-
 export default function MediaDetails() {
   const { id } = useParams();
   const { accessToken } = useAuth();
@@ -30,7 +29,7 @@ export default function MediaDetails() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/movie/${id}`)
+      .get(`${process.env.REACT_APP_API_URL}/movie/${id}`)
       .then((response) => {
         setMediaItem(response.data);
       })
@@ -39,21 +38,19 @@ export default function MediaDetails() {
       });
   }, [id]);
 
-  // ⭐ ADD TO FAVORITES FUNCTION
   const addFavorite = async () => {
     if (!token) {
       alert("You must be logged in to add favorites.");
       return;
     }
-
     try {
       await fetch(`${process.env.REACT_APP_API_URL}/favorites`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ movie_tmdb_id: id })
+        body: JSON.stringify({ movie_tmdb_id: id }),
       });
 
       alert("Added to favorites!");
@@ -86,8 +83,6 @@ export default function MediaDetails() {
           <div className="details">
             <div className="header-row">
               <h1>{title}</h1>
-
-              {/* ⭐ Button now works */}
               <button onClick={addFavorite}>Add to favorites</button>
             </div>
 

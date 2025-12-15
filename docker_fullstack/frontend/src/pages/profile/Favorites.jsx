@@ -47,20 +47,23 @@ function Favorites() {
           favs.map(async (fav) => {
             try {
               const tmdbRes = await fetch(
-                `https://api.themoviedb.org/3/movie/${fav.movie_tmdb_id}?api_key=${TMDB_KEY}`
+                `${process.env.REACT_APP_API_URL}/movie/${fav.movie_tmdb_id}`
               );
               const tmdbData = await tmdbRes.json();
 
               return {
                 movie_tmdb_id: fav.movie_tmdb_id,
-                poster_path: tmdbData.poster_path,
+                poster_path: tmdbData.poster,
                 title: tmdbData.title,
                 rating: tmdbData.vote_average,
                 release_date: tmdbData.release_date,
               };
             } catch (err) {
               console.error("TMDB fetch error:", err);
-              return { movie_tmdb_id: fav.movie_tmdb_id, title: "Unknown Movie" };
+              return {
+                movie_tmdb_id: fav.movie_tmdb_id,
+                title: "Unknown Movie",
+              };
             }
           })
         );
@@ -85,7 +88,9 @@ function Favorites() {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(() => {
-        setFavorites((prev) => prev.filter((f) => f.movie_tmdb_id !== movieTmdbId));
+        setFavorites((prev) =>
+          prev.filter((f) => f.movie_tmdb_id !== movieTmdbId)
+        );
       })
       .catch((err) => console.error("Error removing favorite:", err));
   };
@@ -118,7 +123,11 @@ function Favorites() {
 
                   <h3 className="favorite-title">{fav.title}</h3>
 
-                  {fav.rating && <p className="favorite-rating">⭐ {fav.rating.toFixed(1)}</p>}
+                  {fav.rating && (
+                    <p className="favorite-rating">
+                      ⭐ {fav.rating.toFixed(1)}
+                    </p>
+                  )}
 
                   {user && isOwnProfile && (
                     <button
