@@ -62,7 +62,7 @@ async function searchMoviesByName(searchTerm, page) {
       },
     }
   );
-  return response.data.results;
+  return response.data;
 }
 
 async function searchByGenreId(genreId, page) {
@@ -78,7 +78,7 @@ async function searchByGenreId(genreId, page) {
       },
     }
   );
-  return response.data.results;
+  return response.data;
 }
 
 async function searchByPersonName(searchTerm) {
@@ -129,36 +129,41 @@ export async function smartSearch(req, res, next) {
     const genreId = await findGenreId(searchTerm);
 
     if (genreId) {
-      const results = await searchByGenreId(genreId, page);
-      return res.json(results);
+      const genreData = await searchByGenreId(genreId, page);
+      return res.json({
+        results: genreData.results,
+        page: genreData.page,
+        totalPages: genreData.total_pages,
+      });
     }
 
-    const [movieResults, personResults] = await Promise.all([
+    const [movieData, personResults] = await Promise.all([
       searchMoviesByName(searchTerm, page),
       searchByPersonName(searchTerm),
     ]);
 
-    let results = [];
-
-    if (movieResults?.length > 0) {
-      results = results.concat(movieResults);
-    }
+    let combinedResults = [...(movieData.results || [])];
 
     if (personResults?.length > 0) {
-      results = results.concat(personResults);
+      combinedResults = combinedResults.concat(personResults);
     }
 
+    // poistetaan duplikaatit
     const unique = [];
     const ids = new Set();
 
-    for (const movie of results) {
+    for (const movie of combinedResults) {
       if (movie && movie.id && !ids.has(movie.id)) {
         ids.add(movie.id);
         unique.push(movie);
       }
     }
 
-    return res.json(unique);
+    return res.json({
+      results: unique,
+      page: movieData.page,
+      totalPages: movieData.total_pages,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Virhe haussa" });

@@ -1,7 +1,7 @@
 import SearchResults from "../components/SearchResults";
 import NowPlaying from "../components/NowPlaying";
 import SearchBar from "../components/SearchBar";
-import React, { useState } from "react";
+import React, { useCallback, useState, useRef } from "react";
 import axios from "axios";
 import "./Home.css";
 
@@ -11,14 +11,17 @@ function Home() {
   const [showResults, setShowResults] = useState(false);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const handleSearch = async (newTerm) => {
     setSearchTerm(newTerm);
-
     if (!newTerm) {
       setShowResults(false);
+      setPage(1);
+      setHasMore(false);
       return;
     }
+    setHasMore(true);
     setPage(1);
 
     await axios
@@ -26,7 +29,7 @@ function Home() {
         `${process.env.REACT_APP_API_URL}/search/movies?query=${newTerm}&page=1`
       )
       .then((response) => {
-        setResults(response.data);
+        setResults(response.data.results);
         setShowResults(true);
       })
       .catch((error) => {
@@ -35,37 +38,40 @@ function Home() {
   };
 
   async function fetchMoreResults(term, newPage) {
-    await axios
-      .get(
+    setLoading(true);
+    try {
+      const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/search/movies?query=${term}&page=${newPage}`
-      )
-      .then((response) => {
-        setResults((prev) => [...prev, ...response.data]);
-        setPage(newPage);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+      );
+      setResults((prev) => [...prev, ...response.data.results]);
+      setPage(newPage);
+      setHasMore(newPage < response.data.totalPages);
+    } catch (error) {
+      console.error("Error fetching movies:", error);
+    } finally {
+      setLoading(false);
+    }
   }
+
+  const loadMore = useCallback(() => {
+    if (loading) return;
+    fetchMoreResults(searchTerm, page + 1);
+  }, [searchTerm, page, fetchMoreResults]);
 
   return (
     <div className="home">
       <main className="home-content">
         <div className="search-container">
           <SearchBar onSearch={handleSearch} />
-          <button
-            onClick={() => {
-              fetchMoreResults(searchTerm, page + 1);
-            }}
-          >
-            hae lisää
-          </button>
-          <p>sivu numero: {page}</p>
         </div>
         <SearchResults
           searchTerm={searchTerm}
           results={results}
           showResults={showResults}
+          onLoadMore={loadMore}
+          hasMore={hasMore}
+          page={page}
+          loading={loading}
         />
         <div className="now-playing-container">
           <NowPlaying />
