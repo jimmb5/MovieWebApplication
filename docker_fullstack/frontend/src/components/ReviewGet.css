@@ -1,13 +1,103 @@
 .review-post {
-  font-family: Arial, Helvetica, sans-serif;
-  background: #171717;
-  color: #d5d4d4;
-  border-radius: 10px;
-  margin: 1rem;
-  margin-top: 3rem;
-  padding: 1rem;
+  background: transparent;
+  padding: 1.25rem 0;
+  margin-bottom: var(--medium-padding);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.review-post-content {
+  width: 100%;
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 3rem;
-} 
+  flex-direction: column;
+}
+
+.review-post-content h1 {
+  font-weight: normal;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  color: var(--text-color);
+}
+
+.review-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.review-item {
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.review-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.review-header .avatar-initial {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-color);
+  text-transform: uppercase;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.review-author-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.review-author {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.review-date {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.review-rating {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding-left: calc(2.5rem + 0.75rem);
+}
+
+.review-comment {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+  margin: 0;
+  padding-left: calc(2.5rem + 0.75rem);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.review-post-content > p {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+  padding: 1rem 0;
+  margin: 0;
+}

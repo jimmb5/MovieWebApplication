@@ -1,21 +1,23 @@
-import react from "react";
+import React from "react";
 import "./Review.css";
 import ReviewStar from "./ReviewStar";
 import { FaPaperPlane } from "react-icons/fa";
 import { useState } from "react";
 import axios from "axios";
 import { useAuth } from "../contexts/AuthContext";
+import { useToast } from "../contexts/ToastContext";
 
-export default function Review({ movieId }) {
+export default function Review({ movieId, onReviewSubmitted }) {
   const [isSubmittingReview, setIsSubmittingReview] = useState(false);
   const { accessToken, user } = useAuth();
+  const { addToast } = useToast();
   const [reviewText, setReviewText] = useState("");
   const [selectedRating, setSelectedRating] = useState("1");
 
   const handleSubmitReview = async (e) => {
     e.preventDefault();
     if (!reviewText.trim() || isSubmittingReview || !accessToken) return;
-    console.log(reviewText, selectedRating);
+    
     setIsSubmittingReview(true);
     try {
       await axios.post(
@@ -33,11 +35,23 @@ export default function Review({ movieId }) {
           },
         }
       );
+      
+      setReviewText("");
+      setSelectedRating("1");
+      addToast("Review added successfully", "success");
+      
+      if (onReviewSubmitted) {
+        onReviewSubmitted();
+      }
     } catch (error) {
       console.error("Error submitting review:", error);
+      if (error.response?.status === 400) {
+        addToast("You have already reviewed this movie", "error");
+      } else {
+        addToast("Failed to add review", "error");
+      }
     } finally {
       setIsSubmittingReview(false);
-      setReviewText("");
     }
   };
 
@@ -62,23 +76,25 @@ export default function Review({ movieId }) {
               onChange={(e) => setReviewText(e.target.value)}
               disabled={isSubmittingReview}
             />
-            <ReviewStar
-              value={selectedRating}
-              onChange={setSelectedRating}
-              disabled={isSubmittingReview}
-            />
-            <button
-              className="review-post-button"
-              type="button"
-              disabled={
-                !accessToken || isSubmittingReview || !reviewText.trim()
-              }
-              onClick={handleSubmitReview}
-              title="Post"
-            >
-              <FaPaperPlane />
-            </button>
           </div>
+          <button
+            className="review-post-button"
+            type="button"
+            disabled={
+              !accessToken || isSubmittingReview || !reviewText.trim()
+            }
+            onClick={handleSubmitReview}
+            title="Post"
+          >
+            <FaPaperPlane />
+          </button>
+        </div>
+        <div className="review-star-row">
+          <ReviewStar
+            value={selectedRating}
+            onChange={setSelectedRating}
+            disabled={isSubmittingReview}
+          />
         </div>
       </div>
     </div>

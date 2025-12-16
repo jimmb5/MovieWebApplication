@@ -5,13 +5,16 @@ import axios from "axios";
 import Review from "../components/Review";
 import ReviewGet from "../components/ReviewGet";
 import { useAuth } from "../contexts/AuthContext";
+import { useToast } from "../contexts/ToastContext";
+import { FaHeart } from "react-icons/fa";
 
 export default function MediaDetails() {
   const { id } = useParams();
   const { accessToken } = useAuth();
-  const token = accessToken || localStorage.getItem("token");
+  const { addToast } = useToast();
 
   const [mediaItem, setMediaItem] = useState({});
+  const [reviewsRefreshTrigger, setReviewsRefreshTrigger] = useState(0);
 
   const title = mediaItem.title;
   const overview = mediaItem.overview;
@@ -41,25 +44,34 @@ export default function MediaDetails() {
   }, [id]);
 
   const addFavorite = async () => {
-    if (!token) {
-      alert("You must be logged in to add favorites.");
+    if (!accessToken) {
+      addToast("You must be logged in to add favorites", "error");
       return;
     }
     try {
-      await fetch(`${process.env.REACT_APP_API_URL}/favorites`, {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/favorites`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({ movie_tmdb_id: id }),
       });
 
-      alert("Added to favorites!");
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.error || "Failed to add to favorites");
+      }
+
+      addToast("Added to favorites!", "success");
     } catch (err) {
       console.error("Error adding favorite:", err);
-      alert("Failed to add to favorites.");
+      addToast(err.message || "Failed to add to favorites", "error");
     }
+  };
+
+  const handleReviewSubmitted = () => {
+    setReviewsRefreshTrigger(prev => prev + 1);
   };
 
   return (
@@ -85,7 +97,9 @@ export default function MediaDetails() {
           <div className="details">
             <div className="header-row">
               <h1>{title}</h1>
-              <button onClick={addFavorite}>Add to favorites</button>
+              <button className="favorite-button" onClick={addFavorite} title="Add to favorites">
+                <FaHeart />
+              </button>
             </div>
 
             <div className="meta-row darker-text">
@@ -117,8 +131,8 @@ export default function MediaDetails() {
           </div>
         </div>
       <div className = "review">
-         <Review movieId={id} /> 
-         <ReviewGet movieId={id} />
+         <Review movieId={id} onReviewSubmitted={handleReviewSubmitted} /> 
+         <ReviewGet movieId={id} refreshTrigger={reviewsRefreshTrigger} />
          </div>
       </main>
     </div>
