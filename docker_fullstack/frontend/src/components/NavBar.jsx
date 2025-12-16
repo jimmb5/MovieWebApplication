@@ -13,7 +13,7 @@ function NavBar({ onUserIconClick, userButtonRef }) {
     <nav className="navbar">
       <div className="navbar-logo">
         <Link to="/">
-          <img src="./mw_logo_wide_orange.png" alt="" width="200px" />
+          <img src="/mw_logo_wide_orange.png" alt="MovieWeb" width="200px" />
         </Link>
       </div>
 
