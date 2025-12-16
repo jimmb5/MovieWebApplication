@@ -20,3 +20,8 @@ Projektimme rest dokumentaatio on tehty Postmanilla. Se löytyy kokonaisuudessaa
 ## Kehitysjonon hallinta
 
 Kehitysjonon hallinta löytyy projektimme githubista: [Project Board](https://github.com/users/jimmb5/projects/2/views/9)
+
+## Yksikkötestit
+
+Yksikkötestit dev tietokannalla ajettuna:
+![Testit](./testsOK.png)
