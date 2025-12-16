@@ -1,12 +1,12 @@
 import pool from "../database.js";
 
 // luo uusi arvostlu
-export async function addOne(userId, movieId, reviewId, rating, comment) {
+export async function addOne(userId, movieId, rating, comment) {
   const result = await pool.query(
-    `INSERT INTO user_movie_ratings (user_id, movie_id, review_id, rating, comment) 
-     VALUES ($1, $2, $3, $4, $5) 
-     RETURNING user_id, movie_id, rating, comment, created_at`,
-    [userId, movieId, reviewId, rating, comment]
+    `INSERT INTO user_movie_ratings (user_id, movie_tmdb_id, rating, comment) 
+     VALUES ($1, $2, $3, $4) 
+     RETURNING user_id, movie_tmdb_id, rating, comment, created_at`,
+    [userId, movieId, rating, comment]
   );
   return result.rows[0];
 }
@@ -14,7 +14,7 @@ export async function addOne(userId, movieId, reviewId, rating, comment) {
 // hae kaikki arvostelut
 export async function getByReviewId(reviewId) {
   const result = await pool.query(
-    `SELECT umr.user_id, umr.movie_id, umr.rating, umr.comment, umr.created_at,
+    `SELECT umr.user_id, umr.movie_tmdb_id, umr.rating, umr.comment, umr.created_at,
             u.username as author_username
      FROM user_movie_ratings umr
      JOIN users u ON umr.user_id = u.id
@@ -28,11 +28,11 @@ export async function getByReviewId(reviewId) {
 //hae arvostelut tieylle elokuvalle
 export async function getByMovieId(movieId) {
   const result = await pool.query(
-    `SELECT umr.user_id, umr.movie_id, umr.rating, umr.comment, umr.created_at,
+    `SELECT umr.user_id, umr.movie_tmdb_id, umr.rating, umr.comment, umr.created_at,
             u.username as author_username
      FROM user_movie_ratings umr
      JOIN users u ON umr.user_id = u.id
-     WHERE umr.movie_id = $1
+     WHERE umr.movie_tmdb_id = $1
      ORDER BY umr.created_at ASC`,
     [movieId]
   );
@@ -44,8 +44,8 @@ export async function updateOne(userId, movieId, rating, comment) {
   const result = await pool.query(
     `UPDATE user_movie_ratings 
      SET rating = $1, comment = $2, created_at = now() 
-     WHERE user_id = $3 AND movie_id = $4 
-     RETURNING user_id, movie_id, rating, comment, created_at`,
+     WHERE user_id = $3 AND movie_tmdb_id = $4 
+     RETURNING user_id, movie_tmdb_id, rating, comment, created_at`,
     [rating, comment, userId, movieId]
   );
   return result.rows.length > 0 ? result.rows[0] : null;
@@ -54,7 +54,7 @@ export async function updateOne(userId, movieId, rating, comment) {
 // poista arvostelu
 export async function deleteOne(userId, movieId) {
   const result = await pool.query(
-    "DELETE FROM user_movie_ratings WHERE user_id = $1 AND movie_id = $2 RETURNING user_id, movie_id",
+    "DELETE FROM user_movie_ratings WHERE user_id = $1 AND movie_tmdb_id = $2 RETURNING user_id, movie_tmdb_id",
     [userId, movieId]
   );
   return result.rows.length > 0 ? result.rows[0] : null;
@@ -64,7 +64,7 @@ export async function deleteOne(userId, movieId) {
 export async function hasReviewed(userId, movieId) {
   const result = await pool.query(
     `SELECT 1 FROM user_movie_ratings 
-     WHERE user_id = $1 AND movie_id = $2`,
+     WHERE user_id = $1 AND movie_tmdb_id = $2`,
     [userId, movieId]
   );
   return result.rows.length > 0;
