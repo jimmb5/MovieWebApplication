@@ -3,15 +3,25 @@ import axios from "axios";
 import MediaCard from "./MediaCard";
 import "./NowPlaying.css";
 
-export default function NowPlaying() {
+export default function NowPlaying({ backdrop }) {
   const [movies, setMovies] = useState([]);
   const title = "Now Playing in Finland";
+
+  function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
 
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/movie/now_playing`)
       .then((response) => {
-        setMovies(response.data);
+        const data = response.data;
+        setMovies(data);
+
+        if (data.length > 0) {
+          const randomMovie = data[getRandomInt(0, data.length - 1)];
+          backdrop(randomMovie.backdrop_path);
+        }
       })
       .catch((error) => {
         console.error(error);

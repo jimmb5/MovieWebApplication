@@ -12,6 +12,7 @@ function Home() {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [backdrop, setBackdrop] = useState();
 
   const handleSearch = async (newTerm) => {
     setSearchTerm(newTerm);
@@ -59,7 +60,19 @@ function Home() {
   }, [searchTerm, page, fetchMoreResults]);
 
   return (
-    <div className="home">
+    <div
+      className="home"
+      style={{
+        backgroundImage: `
+          linear-gradient(rgba(0, 0, 0, 0.92), rgba(24, 24, 24, 0.81)),
+          url(https://image.tmdb.org/t/p/original${backdrop})
+        `,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backgroundAttachment: "fixed",
+      }}
+    >
       <main className="home-content">
         <div className="search-container">
           <SearchBar onSearch={handleSearch} />
@@ -74,7 +87,7 @@ function Home() {
           loading={loading}
         />
         <div className="now-playing-container">
-          <NowPlaying />
+          <NowPlaying backdrop={setBackdrop} />
         </div>
       </main>
     </div>
