@@ -11,9 +11,9 @@ function NavBar({ onUserIconClick, userButtonRef }) {
 
   return (
     <nav className="navbar">
-      <div className="navbar-brand">
-        <Link to="/" className="navbar-logo">
-          <img src="./mw_logo.png" alt="" width="200px" />
+      <div className="navbar-logo">
+        <Link to="/">
+          <img src="./mw_logo_wide_orange.png" alt="" width="200px" />
         </Link>
       </div>
 
@@ -25,16 +25,14 @@ function NavBar({ onUserIconClick, userButtonRef }) {
           Groups
         </Link>
         {/* <Link to = "/Favorites" className="nav-link">Favorites</Link> */}
-      </div>
-      <div className="navbar-usericon">
-        <button
+        <div
+          className="navbar-usericon"
           ref={userButtonRef}
           type="button"
-          className="navbar-account"
           onClick={handleUserIconClick}
         >
-          <FaUser size={25} />
-        </button>
+          <FaUser size={25} color="#d1954b" />
+        </div>
       </div>
     </nav>
   );
