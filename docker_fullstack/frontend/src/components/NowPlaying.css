@@ -1,0 +1,60 @@
+.now-playing-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  background-color: #171717d2;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  margin: 1rem;
+}
+
+.now-playing-title {
+  font-family: Arial, sans-serif;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #f0f0f0;
+  margin-bottom: 1rem;
+}
+
+.now-playing-scroll {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 0.5rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.now-playing-scroll > * {
+  flex: 0 0 auto;
+}
+
+.now-playing-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+
+.now-playing-scroll::-webkit-scrollbar-thumb {
+  background-color: #313131;
+  border-radius: 4px;
+}
+
+.now-playing-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Responsiivisuus */
+@media (max-width: 600px) {
+  .now-playing-wrapper {
+    padding: 0.5rem;
+  }
+
+  .now-playing-title {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .now-playing-scroll {
+    gap: 0.5rem;
+  }
+}

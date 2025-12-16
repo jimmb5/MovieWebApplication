@@ -8,7 +8,6 @@ import UserModal from "./modals/UserModal";
 
 import { useAuth } from "../contexts/AuthContext";
 import "./modals/Modal.css";
-import "./Layout.css";
 import "./Footer.css";
 import Footer from "./Footer.jsx";
 
@@ -21,7 +20,7 @@ function Layout() {
   const location = useLocation();
   const [showRegister, setShowRegister] = useState(false);
 
-// Add this line right after getting user from context:
+  // Add this line right after getting user from context:
   console.log("Logged-in user in Layout:", user);
 
   // avaa login jos tullaan protected routesta
@@ -42,16 +41,16 @@ function Layout() {
       setIsLoginModalOpen(true);
     }
   };
-  
+
   return (
     <>
-      <NavBar 
-      onUserIconClick={handleUserIconClick} 
-      userButtonRef={userButtonRef}
+      <NavBar
+        onUserIconClick={handleUserIconClick}
+        userButtonRef={userButtonRef}
       />
-      <div className="layout-content">
-        <Outlet />
-      </div>
+
+      <Outlet />
+
       <Footer />
       {(IsLoginModalOpen || showRegister) && !user && (
         <div

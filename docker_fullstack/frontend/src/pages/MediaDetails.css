@@ -1,7 +1,7 @@
 .media-details {
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - var(--navbar-height));
+  min-height: 100vh;
 }
 
 .media-details-content {
@@ -16,6 +16,7 @@
 .details-layout {
   font-family: Arial, Helvetica, sans-serif;
   background: #171717;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   color: #d5d4d4;
   border-radius: 10px;
   margin: 1rem;
