@@ -18,4 +18,6 @@ Sovellus yhdistää frontendin ja backendin saumattomasti, tarjoten interaktiivi
 - **Frontend:** React, JavaScript  
 - **Backend:** Node.js, Express  
 - **Tietokanta:** PostgreSQL  
-- **API:** TMDB API elokuvien hakemiseen  
+- **API:** TMDB API elokuvien hakemiseen
+
+![Home-page-screeshot](./home-page-screenshot.png)
