@@ -1,7 +1,7 @@
 import { useAuth } from "../../contexts/AuthContext";
 import ProfileSidebar from "../../components/profile/ProfileSidebar";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import "./Favorites.css";
 
 function Favorites() {
@@ -110,23 +110,28 @@ function Favorites() {
             <div className="favorites-grid">
               {favorites.map((fav) => (
                 <div key={fav.movie_tmdb_id} className="favorite-card">
-                  <img
-                    src={
-                      fav.poster_path
-                        ? `https://image.tmdb.org/t/p/w300${fav.poster_path}`
-                        : "/no-image.jpg"
-                    }
-                    alt={fav.title}
-                    className="favorite-poster"
-                  />
+                  <Link 
+                    to={`/movie/${fav.movie_tmdb_id}`}
+                    className="favorite-card-link"
+                  >
+                    <img
+                      src={
+                        fav.poster_path
+                          ? `https://image.tmdb.org/t/p/w300${fav.poster_path}`
+                          : "/no-image.jpg"
+                      }
+                      alt={fav.title}
+                      className="favorite-poster"
+                    />
 
-                  <h3 className="favorite-title">{fav.title}</h3>
+                    <h3 className="favorite-title">{fav.title}</h3>
 
-                  {fav.rating && (
-                    <p className="favorite-rating">
-                      ⭐ {fav.rating.toFixed(1)}
-                    </p>
-                  )}
+                    {fav.rating && (
+                      <p className="favorite-rating">
+                        ⭐ {fav.rating.toFixed(1)}
+                      </p>
+                    )}
+                  </Link>
 
                   {user && isOwnProfile && (
                     <button
