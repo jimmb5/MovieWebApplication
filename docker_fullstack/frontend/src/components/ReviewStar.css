@@ -1,0 +1,38 @@
+.review-star-selector {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.review-star-label {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  white-space: nowrap;
+}
+
+.review-star-options {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.review-star-option {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: transform 0.2s ease;
+}
+
+.review-star-option:hover:not(.disabled) {
+  transform: scale(1.1);
+}
+
+.review-star-option.disabled {
+  cursor: default;
+}
+
+.review-star-input {
+  display: none;
+}
+
