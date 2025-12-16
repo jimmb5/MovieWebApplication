@@ -53,7 +53,7 @@
   color: var(--text-color);
   font-size: 0.95rem;
   font-family: inherit;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .review-input:focus {
@@ -68,20 +68,22 @@
 
 .review-post-button {
   background: rgba(255, 255, 255, 0.05);
-  color: var(--text-color);
+  color: #fff;
   border: 1px solid rgba(255, 255, 255, 0.08);
   padding: 0.65rem;
   border-radius: 999px;
   font-size: 0.95rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  flex: 0 0 auto;
+  font-family: inherit;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-  width: 2.5rem;
-  height: 2.5rem;
   aspect-ratio: 1;
+  min-width: 2.5rem;
 }
 
 .review-post-button:hover:not(:disabled) {
@@ -100,4 +102,28 @@
   display: flex;
   align-items: center;
   padding-left: calc(2.5rem + 0.85rem);
+}
+
+.review-delete-button {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #ef4444;
+}
+
+.review-delete-button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #ff5555;
+}
+
+.review-cancel-button {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.review-cancel-button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: var(--text-color);
 }
