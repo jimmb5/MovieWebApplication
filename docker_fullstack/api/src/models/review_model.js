@@ -5,7 +5,7 @@ export async function addOne(userId, movieId, rating, comment) {
   const result = await pool.query(
     `INSERT INTO user_movie_ratings (user_id, movie_tmdb_id, rating, comment) 
      VALUES ($1, $2, $3, $4) 
-     RETURNING user_id, movie_tmdb_id, rating, comment, created_at`,
+     RETURNING review_id, user_id, movie_tmdb_id, rating, comment, created_at`,
     [userId, movieId, rating, comment]
   );
   return result.rows[0];
@@ -28,7 +28,7 @@ export async function getByReviewId(reviewId) {
 //hae arvostelut tieylle elokuvalle
 export async function getByMovieId(movieId) {
   const result = await pool.query(
-    `SELECT umr.user_id, umr.movie_tmdb_id, umr.rating, umr.comment, umr.created_at,
+    `SELECT umr.review_id, umr.user_id, umr.movie_tmdb_id, umr.rating, umr.comment, umr.created_at,
             u.username as author_username
      FROM user_movie_ratings umr
      JOIN users u ON umr.user_id = u.id
@@ -40,22 +40,22 @@ export async function getByMovieId(movieId) {
 }
 
 // päivitä arvostelu
-export async function updateOne(userId, movieId, rating, comment) {
+export async function updateOne(reviewId, rating, comment) {
   const result = await pool.query(
     `UPDATE user_movie_ratings 
      SET rating = $1, comment = $2, created_at = now() 
-     WHERE user_id = $3 AND movie_tmdb_id = $4 
-     RETURNING user_id, movie_tmdb_id, rating, comment, created_at`,
-    [rating, comment, userId, movieId]
+     WHERE review_id = $3 
+     RETURNING review_id, user_id, movie_tmdb_id, rating, comment, created_at`,
+    [rating, comment, reviewId]
   );
   return result.rows.length > 0 ? result.rows[0] : null;
 }
 
 // poista arvostelu
-export async function deleteOne(userId, movieId) {
+export async function deleteOne(reviewId) {
   const result = await pool.query(
-    "DELETE FROM user_movie_ratings WHERE user_id = $1 AND movie_tmdb_id = $2 RETURNING user_id, movie_tmdb_id",
-    [userId, movieId]
+    "DELETE FROM user_movie_ratings WHERE review_id = $1 RETURNING review_id, user_id, movie_tmdb_id",
+    [reviewId]
   );
   return result.rows.length > 0 ? result.rows[0] : null;
 }
