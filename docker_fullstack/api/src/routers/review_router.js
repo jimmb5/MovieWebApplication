@@ -9,7 +9,7 @@ import { authenticateToken } from "../middleware/auth.js";
 
 const reviewRouter = Router();
 
-reviewRouter.post("/:movieId", authenticateToken, createReview);
+reviewRouter.post("/", authenticateToken, createReview);
 reviewRouter.get("/movie/:movieId", getMovieReviews);
 reviewRouter.put("/:reviewId",  authenticateToken, updateReview);
 reviewRouter.delete("/:reviewId", authenticateToken,  deleteReview);

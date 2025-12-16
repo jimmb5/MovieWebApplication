@@ -7,6 +7,7 @@ import userRouter from "./routers/user_router.js";
 import groupsRouter from "./routers/groups_router.js";
 import movieRouter from "./routers/movie_router.js";
 import searchRouter from "./routers/search_router.js";
+import reviewRouter from "./routers/review_router.js";
 
 import favoritesRouter from "./routers/favorites_router.js";
 
@@ -24,13 +25,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.get("/", async (req, res) => {
-  res.send("Postgres API esimerkki");
+  res.send("Postgres API esimerkki toimii!");
 });
 
 app.use("/user", userRouter);
 app.use("/movie", movieRouter);
 app.use("/search", searchRouter);
 app.use("/groups", groupsRouter);
+app.use("/review", reviewRouter);
 app.use("/favorites", favoritesRouter);
 
 // Käynnistä serveri vain jos EI olla testimoodissa

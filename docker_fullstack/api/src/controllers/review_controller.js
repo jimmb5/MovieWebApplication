@@ -6,21 +6,22 @@ import {
     deleteOne,
     hasReviewed,
     isAuthor
-} from '../services/review_service.js';
+} from "../models/review_model.js";
 
 // Luo uusi arvostelu
 export async function createReview(req, res, next) {
     try {
-        const { movieId } = req.params;
-        const { reviewId, rating, comment } = req.body;
-        const userId = req.user.userId;
+        console.log(req.body);
+        const {rating, comment, movieId, userId } = req.body;
+       
 
         // tarkista että käyttäjä ei ole jo arvostellut tätä elokuvaa
         const alreadyReviewed = await hasReviewed(userId, movieId);
         if (alreadyReviewed) {
             return res.status(400).json({ error: "You have already reviewed this movie" });
         }
-        const review = await addOne(userId, movieId, reviewId, rating, comment);
+        const review = await addOne(userId, movieId, rating, comment);
+        
 
         res.status(201).json({
             message: "Review created successfully",

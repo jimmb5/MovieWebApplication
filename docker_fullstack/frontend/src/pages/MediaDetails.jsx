@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "./MediaDetails.css";
 import axios from "axios";
+import Review from "../components/Review";
+import ReviewGet from "../components/ReviewGet";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function MediaDetails() {
@@ -114,6 +116,10 @@ export default function MediaDetails() {
             <div className="rating-row">tähtiarvostelu</div>
           </div>
         </div>
+      <div className = "review">
+         <Review movieId={id} /> 
+         <ReviewGet movieId={id} />
+         </div>
       </main>
     </div>
   );

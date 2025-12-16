@@ -70,6 +70,7 @@ CREATE INDEX group_post_comments_post_idx ON group_post_comments(group_post_id);
 CREATE TABLE user_movie_ratings (
   user_id     uuid NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   movie_tmdb_id int NOT NULL,
+  review_id   uuid UNIQUE DEFAULT gen_random_uuid(),
   rating      int,
   comment     text,
   created_at  timestamptz NOT NULL DEFAULT now(),
