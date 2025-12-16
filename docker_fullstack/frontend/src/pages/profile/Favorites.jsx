@@ -1,4 +1,5 @@
 import { useAuth } from "../../contexts/AuthContext";
+import { useToast } from "../../contexts/ToastContext";
 import ProfileSidebar from "../../components/profile/ProfileSidebar";
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
@@ -6,6 +7,7 @@ import "./Favorites.css";
 
 function Favorites() {
   const { user, accessToken } = useAuth();
+  const { addToast } = useToast();
 
   const { username } = useParams(); // detect if viewing someone else's page
   const isPublicView = !!username; // true if viewing another user's favorites
@@ -79,19 +81,28 @@ function Favorites() {
   }, [accessToken, TMDB_KEY, username, isPublicView]);
 
   // Remove favorite (only for logged-in user's own profile)
-  const removeFavorite = (movieTmdbId) => {
+  const removeFavorite = async (movieTmdbId) => {
     if (!user || !isOwnProfile) return;
 
-    fetch(`${process.env.REACT_APP_API_URL}/favorites/${movieTmdbId}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${accessToken}` },
-    })
-      .then(() => {
-        setFavorites((prev) =>
-          prev.filter((f) => f.movie_tmdb_id !== movieTmdbId)
-        );
-      })
-      .catch((err) => console.error("Error removing favorite:", err));
+    try {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/favorites/${movieTmdbId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to remove favorite");
+      }
+
+      setFavorites((prev) =>
+        prev.filter((f) => f.movie_tmdb_id !== movieTmdbId)
+      );
+      
+      addToast("Removed from favorites", "success");
+    } catch (err) {
+      console.error("Error removing favorite:", err);
+      addToast("Failed to remove favorite", "error");
+    }
   };
 
   return (
