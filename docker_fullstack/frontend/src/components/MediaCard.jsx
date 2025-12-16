@@ -16,7 +16,7 @@ export default function MediaCard({ mediaItem }) {
           alt={mediaItem.title}
         />
       </div>
-      <h3>{mediaItem.title || mediaItem.name}</h3>
+      <h3>Tähtiarvostelu</h3>
     </div>
   );
 }

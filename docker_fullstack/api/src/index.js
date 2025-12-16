@@ -9,6 +9,8 @@ import movieRouter from "./routers/movie_router.js";
 import searchRouter from "./routers/search_router.js";
 import reviewRouter from "./routers/review_router.js";
 
+import favoritesRouter from "./routers/favorites_router.js";
+
 const app = express();
 const port = process.env.PORT;
 
@@ -31,6 +33,7 @@ app.use("/movie", movieRouter);
 app.use("/search", searchRouter);
 app.use("/groups", groupsRouter);
 app.use("/review", reviewRouter);
+app.use("/favorites", favoritesRouter);
 
 // Käynnistä serveri vain jos EI olla testimoodissa
 if (process.env.NODE_ENV !== "test") {

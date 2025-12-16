@@ -26,6 +26,7 @@ export function AuthProvider({ children }) {
     }
 
     const data = await res.json();
+    console.log("AuthContext refreshToken data:", data);
     setUser({ 
       id: data.id,
       username: data.username,

@@ -4,11 +4,15 @@ import "./MediaDetails.css";
 import axios from "axios";
 import Review from "../components/Review";
 import ReviewGet from "../components/ReviewGet";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function MediaDetails() {
   const { id } = useParams();
+  const { accessToken } = useAuth();
+  const token = accessToken || localStorage.getItem("token");
 
   const [mediaItem, setMediaItem] = useState({});
+
   const title = mediaItem.title;
   const overview = mediaItem.overview;
   const backdrop = mediaItem.backdrop;
@@ -27,23 +31,45 @@ export default function MediaDetails() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/movie/${id}`)
+      .get(`${process.env.REACT_APP_API_URL}/movie/${id}`)
       .then((response) => {
         setMediaItem(response.data);
       })
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  }, [id]);
+
+  const addFavorite = async () => {
+    if (!token) {
+      alert("You must be logged in to add favorites.");
+      return;
+    }
+    try {
+      await fetch(`${process.env.REACT_APP_API_URL}/favorites`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ movie_tmdb_id: id }),
+      });
+
+      alert("Added to favorites!");
+    } catch (err) {
+      console.error("Error adding favorite:", err);
+      alert("Failed to add to favorites.");
+    }
+  };
 
   return (
     <div
       className="media-details"
       style={{
         backgroundImage: `
-    linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)),
-    url(https://image.tmdb.org/t/p/original${backdrop})
-  `,
+          linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)),
+          url(https://image.tmdb.org/t/p/original${backdrop})
+        `,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -59,14 +85,12 @@ export default function MediaDetails() {
           <div className="details">
             <div className="header-row">
               <h1>{title}</h1>
-              <button>Lisää suosikiksi</button>
+              <button onClick={addFavorite}>Add to favorites</button>
             </div>
 
             <div className="meta-row darker-text">
               <span>{releaseYear}</span>
-
               <span>{runtime}</span>
-
               <span>{ageRating}</span>
             </div>
 

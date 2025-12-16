@@ -11,25 +11,28 @@ function NavBar({ onUserIconClick, userButtonRef }) {
 
   return (
     <nav className="navbar">
-      <div className="navbar-brand">
-        <Link to="/" className="navbar-logo">
-          Movie app
+      <div className="navbar-logo">
+        <Link to="/">
+          <img src="./mw_logo_wide_orange.png" alt="" width="200px" />
         </Link>
       </div>
-      <div className="navbar-usericon">
-      <button
-        ref={userButtonRef}
-        type="button"
-        className="navbar-account"
-        onClick={handleUserIconClick}
-      >
-        <FaUser size={25} />
-      </button>
-      </div>
+
       <div className="navbar-links">
-     <Link to = "/movies" className="nav-link">Movies</Link>
-     <Link to = "/groups" className="nav-link">Groups</Link>
-      {/* <Link to = "/Favorites" className="nav-link">Favorites</Link> */}
+        <Link to="/movies" className="nav-link">
+          Movies
+        </Link>
+        <Link to="/groups" className="nav-link">
+          Groups
+        </Link>
+        {/* <Link to = "/Favorites" className="nav-link">Favorites</Link> */}
+        <div
+          className="navbar-usericon"
+          ref={userButtonRef}
+          type="button"
+          onClick={handleUserIconClick}
+        >
+          <FaUser size={25} color="#d1954b" />
+        </div>
       </div>
     </nav>
   );

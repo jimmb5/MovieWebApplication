@@ -17,8 +17,8 @@ export async function getNowPlayingMovies(req, res, next) {
       }
     );
 
-    const top10 = response.data.results.slice(0, 10);
-    res.json(top10);
+    const top20 = response.data.results.slice(0, 20);
+    res.json(top20);
   } catch (error) {
     res.status(500).json({ message: "Virhe haettaessa elokuvia" });
   }
