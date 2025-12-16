@@ -18,7 +18,7 @@ export default function Movies() {
     setLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:3001/movie/popular?page=${pageNum}`
+        `${process.env.REACT_APP_API_URL}/movie/popular?page=${pageNum}`
       );
       
       if (pageNum === 1) {
