@@ -1,12 +1,12 @@
 import request from "supertest";
 import app from "../index.js";
 import pool from "../database.js";
-import { addOne } from "../models/user_model.js";
+import userModel from "../models/user_model.js";
 
 beforeAll(async () => {
   await pool.query("DELETE FROM users");
 
-  await addOne("testuser", "test@test.com", "Test1234");
+  await userModel.addOne("testuser", "test@test.com", "Test1234");
 });
 
 afterAll(async () => {
