@@ -6,7 +6,6 @@ import "./Favorites.css";
 
 function Favorites() {
   const { user, accessToken } = useAuth();
-  const token = accessToken || localStorage.getItem("token");
 
   const { username } = useParams(); // detect if viewing someone else's page
   const isPublicView = !!username; // true if viewing another user's favorites
@@ -19,7 +18,7 @@ function Favorites() {
 
   // Fetch favorites from backend
   useEffect(() => {
-    if (!token && !isOwnProfile) {
+    if (!accessToken && !isPublicView) {
       console.warn("No token found! Please log in.");
       setLoading(false);
       return;
@@ -34,7 +33,7 @@ function Favorites() {
           url = `${process.env.REACT_APP_API_URL}/favorites/user/${username}`;
         } else {
           url = `${process.env.REACT_APP_API_URL}/favorites`;
-          headers = { Authorization: `Bearer ${token}` };
+          headers = { Authorization: `Bearer ${accessToken}` };
         }
 
         const res = await fetch(url, { headers });
@@ -77,7 +76,7 @@ function Favorites() {
     };
 
     fetchFavorites();
-  }, [token, TMDB_KEY, username, isPublicView, isOwnProfile]);
+  }, [accessToken, TMDB_KEY, username, isPublicView]);
 
   // Remove favorite (only for logged-in user's own profile)
   const removeFavorite = (movieTmdbId) => {
@@ -85,7 +84,7 @@ function Favorites() {
 
     fetch(`${process.env.REACT_APP_API_URL}/favorites/${movieTmdbId}`, {
       method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${accessToken}` },
     })
       .then(() => {
         setFavorites((prev) =>
@@ -98,7 +97,7 @@ function Favorites() {
   return (
     <main className="favorites-page">
       <div className="favorites-content">
-        {isOwnProfile && user && <ProfileSidebar />}
+        {isOwnProfile && user && <ProfileSidebar username={username || user.username} />}
 
         <div className="favorites-main">
           <h1>{isPublicView ? `${username}'s Favorites` : "Your Favorites"}</h1>
