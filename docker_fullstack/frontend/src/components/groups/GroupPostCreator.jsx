@@ -24,7 +24,7 @@ function GroupPostCreator() {
       axios
         .get(`${process.env.REACT_APP_API_URL}/search/movies?query=${encodeURIComponent(debouncedQuery)}`)
         .then((response) => {
-          setMovieResults(response.data);
+          setMovieResults(response.data.results);
         })
         .catch((error) => {
           console.error(error);
