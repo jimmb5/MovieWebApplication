@@ -1,7 +1,7 @@
 .home {
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - var(--navbar-height));
+  min-height: 100vh;
 }
 
 .home-content {
@@ -22,4 +22,18 @@
 .now-playing-container {
   margin-top: auto;
   padding-top: 2rem;
+}
+
+/* Tabletti (≥ 600px) */
+@media (min-width: 600px) {
+  .search-bar input {
+    width: 400px;
+  }
+}
+
+/* Desktop / iso näyttö (≥ 1024px) */
+@media (min-width: 800px) {
+  .search-bar input {
+    width: 600px; /* kiinteä leveys isoilla näytöillä */
+  }
 }
