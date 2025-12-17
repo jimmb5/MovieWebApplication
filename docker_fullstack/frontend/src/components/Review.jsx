@@ -12,12 +12,12 @@ export default function Review({ movieId, onReviewSubmitted }) {
   const { accessToken, user } = useAuth();
   const { addToast } = useToast();
   const [reviewText, setReviewText] = useState("");
-  const [selectedRating, setSelectedRating] = useState("1");
+  const [selectedRating, setSelectedRating] = useState(1);
 
   const handleSubmitReview = async (e) => {
     e.preventDefault();
     if (!reviewText.trim() || isSubmittingReview || !accessToken) return;
-    
+
     setIsSubmittingReview(true);
     try {
       await axios.post(
@@ -35,11 +35,11 @@ export default function Review({ movieId, onReviewSubmitted }) {
           },
         }
       );
-      
+
       setReviewText("");
-      setSelectedRating("1");
+      setSelectedRating(1);
       addToast("Review added successfully", "success");
-      
+
       if (onReviewSubmitted) {
         onReviewSubmitted();
       }
@@ -80,9 +80,7 @@ export default function Review({ movieId, onReviewSubmitted }) {
           <button
             className="review-post-button"
             type="button"
-            disabled={
-              !accessToken || isSubmittingReview || !reviewText.trim()
-            }
+            disabled={!accessToken || isSubmittingReview || !reviewText.trim()}
             onClick={handleSubmitReview}
             title="Post"
           >

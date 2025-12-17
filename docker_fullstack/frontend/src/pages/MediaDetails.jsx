@@ -7,13 +7,16 @@ import ReviewGet from "../components/ReviewGet";
 import { useAuth } from "../contexts/AuthContext";
 import { useToast } from "../contexts/ToastContext";
 import { FaHeart } from "react-icons/fa";
+import StarRating from "../components/StarRating";
 
 export default function MediaDetails() {
   const { id } = useParams();
+
   const { accessToken } = useAuth();
   const { addToast } = useToast();
 
   const [mediaItem, setMediaItem] = useState({});
+
   const [reviewsRefreshTrigger, setReviewsRefreshTrigger] = useState(0);
 
   const title = mediaItem.title;
@@ -71,7 +74,7 @@ export default function MediaDetails() {
   };
 
   const handleReviewSubmitted = () => {
-    setReviewsRefreshTrigger(prev => prev + 1);
+    setReviewsRefreshTrigger((prev) => prev + 1);
   };
 
   return (
@@ -97,7 +100,11 @@ export default function MediaDetails() {
           <div className="details">
             <div className="header-row">
               <h1>{title}</h1>
-              <button className="favorite-button" onClick={addFavorite} title="Add to favorites">
+              <button
+                className="favorite-button"
+                onClick={addFavorite}
+                title="Add to favorites"
+              >
                 <FaHeart />
               </button>
             </div>
@@ -126,14 +133,26 @@ export default function MediaDetails() {
               <span className="darker-text">Genre</span>
               <span className="cast-crew-genres">{addSpace(genres)}</span>
             </div>
-
-            <div className="rating-row">tähtiarvostelu</div>
+            <div className="rating-row darker-text">
+              <div>
+                <p>User ratings:</p>
+                <br />
+                <StarRating
+                  movieId={id}
+                  size={50}
+                  showInfo={true}
+                  key={reviewsRefreshTrigger}
+                />
+              </div>
+            </div>
           </div>
         </div>
-      <div className = "review">
-         <Review movieId={id} onReviewSubmitted={handleReviewSubmitted} /> 
-         <ReviewGet movieId={id} refreshTrigger={reviewsRefreshTrigger} />
-         </div>
+
+        <div className="review">
+          <Review movieId={id} onReviewSubmitted={handleReviewSubmitted} />
+
+          <ReviewGet movieId={id} refreshTrigger={reviewsRefreshTrigger} />
+        </div>
       </main>
     </div>
   );

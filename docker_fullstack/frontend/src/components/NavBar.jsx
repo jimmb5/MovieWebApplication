@@ -24,7 +24,6 @@ function NavBar({ onUserIconClick, userButtonRef }) {
         <Link to="/groups" className="nav-link">
           Groups
         </Link>
-        {/* <Link to = "/Favorites" className="nav-link">Favorites</Link> */}
         <div
           className="navbar-usericon"
           ref={userButtonRef}
