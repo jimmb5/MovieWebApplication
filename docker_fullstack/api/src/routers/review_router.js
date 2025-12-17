@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   createReview,
   getMovieReviews,
+  getUserReviews,
   updateReview,
   deleteReview,
   getMovieRating,
@@ -12,6 +13,7 @@ const reviewRouter = Router();
 
 reviewRouter.post("/", authenticateToken, createReview);
 reviewRouter.get("/movie/:movieId", getMovieReviews);
+reviewRouter.get("/user/:username", getUserReviews);
 reviewRouter.put("/:reviewId", authenticateToken, updateReview);
 reviewRouter.delete("/:reviewId", authenticateToken, deleteReview);
 reviewRouter.get("/movie/:movieId/rating", getMovieRating);

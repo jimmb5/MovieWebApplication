@@ -39,6 +39,20 @@ export async function getByMovieId(movieId) {
   return result.rows;
 }
 
+// hae arvostelut käyttäjänimen perusteella
+export async function getByUsername(username) {
+  const result = await pool.query(
+    `SELECT umr.review_id, umr.user_id, umr.movie_tmdb_id, umr.rating, umr.comment, umr.created_at,
+            u.username as author_username
+     FROM user_movie_ratings umr
+     JOIN users u ON umr.user_id = u.id
+     WHERE u.username = $1
+     ORDER BY umr.created_at ASC`,
+    [username]
+  );
+  return result.rows;
+}
+
 // päivitä arvostelu
 export async function updateOne(reviewId, rating, comment) {
   const result = await pool.query(

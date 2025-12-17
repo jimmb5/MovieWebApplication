@@ -2,6 +2,7 @@ import {
   addOne,
   getByReviewId,
   getByMovieId,
+  getByUsername,
   updateOne,
   deleteOne,
   hasReviewed,
@@ -38,6 +39,18 @@ export async function getMovieReviews(req, res, next) {
   try {
     const { movieId } = req.params;
     const reviews = await getByMovieId(movieId);
+
+    res.json(reviews);
+  } catch (err) {
+    next(err);
+  }
+}
+
+// Hae arvostelut käyttäjänimen perusteella
+export async function getUserReviews(req, res, next) {
+  try {
+    const { username } = req.params;
+    const reviews = await getByUsername(username);
 
     res.json(reviews);
   } catch (err) {
