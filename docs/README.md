@@ -23,5 +23,9 @@ Kehitysjonon hallinta löytyy projektimme githubista: [Project Board](https://gi
 
 ## Yksikkötestit
 
-Yksikkötestit dev tietokannalla ajettuna:
+Yksikkötestit erillisellä testi tietokannalla ajettuna:
 ![Testit](./testsOK.png)
+Komento: docker compose exec api npm test
+
+## Linkki sivustolle
+Tässä linkki Render.com julkaistulle sivustolle: https://moviewebapplication-nn0j.onrender.com/
