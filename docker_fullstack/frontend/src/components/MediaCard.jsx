@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./MediaCard.css";
 import StarRating from "../components/StarRating";
+import FavoriteButton from "../components/FavoriteButton";
 
 export default function MediaCard({ mediaItem }) {
   const navigate = useNavigate();
@@ -16,8 +17,9 @@ export default function MediaCard({ mediaItem }) {
           src={`https://image.tmdb.org/t/p/w500${mediaItem.poster_path}`}
           alt={mediaItem.title}
         />
+        <FavoriteButton movieId={mediaItem.id} />
       </div>
-      <div className="rating-mediacard ">
+      <div className="rating-mediacard">
         <StarRating movieId={mediaItem.id} size={24} showInfo={false} />
       </div>
     </div>

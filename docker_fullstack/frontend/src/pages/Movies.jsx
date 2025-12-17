@@ -71,7 +71,7 @@ export default function Movies() {
   return (
     <div className="movies-page">
       <div className="movies-container">
-        <h1 className="movies-title">Elokuvat</h1>
+        <h1 className="movies-title">Movies</h1>
         <div className="movies-list">
           {movies.map((movie, index) => {
             const isLastMovie = index === movies.length - 1;

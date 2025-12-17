@@ -6,17 +6,14 @@ import Review from "../components/Review";
 import ReviewGet from "../components/ReviewGet";
 import { useAuth } from "../contexts/AuthContext";
 import { useToast } from "../contexts/ToastContext";
-import { FaHeart } from "react-icons/fa";
 import StarRating from "../components/StarRating";
+import FavoriteButton from "../components/FavoriteButton";
 
 export default function MediaDetails() {
   const { id } = useParams();
-
   const { accessToken } = useAuth();
   const { addToast } = useToast();
-
   const [mediaItem, setMediaItem] = useState({});
-
   const [reviewsRefreshTrigger, setReviewsRefreshTrigger] = useState(0);
 
   const title = mediaItem.title;
@@ -46,33 +43,6 @@ export default function MediaDetails() {
       });
   }, [id]);
 
-  const addFavorite = async () => {
-    if (!accessToken) {
-      addToast("You must be logged in to add favorites", "error");
-      return;
-    }
-    try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/favorites`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({ movie_tmdb_id: id }),
-      });
-
-      if (!res.ok) {
-        const error = await res.json();
-        throw new Error(error.error || "Failed to add to favorites");
-      }
-
-      addToast("Added to favorites!", "success");
-    } catch (err) {
-      console.error("Error adding favorite:", err);
-      addToast(err.message || "Failed to add to favorites", "error");
-    }
-  };
-
   const handleReviewSubmitted = () => {
     setReviewsRefreshTrigger((prev) => prev + 1);
   };
@@ -100,13 +70,7 @@ export default function MediaDetails() {
           <div className="details">
             <div className="header-row">
               <h1>{title}</h1>
-              <button
-                className="favorite-button"
-                onClick={addFavorite}
-                title="Add to favorites"
-              >
-                <FaHeart />
-              </button>
+              <FavoriteButton movieId={id} />
             </div>
 
             <div className="meta-row darker-text">
