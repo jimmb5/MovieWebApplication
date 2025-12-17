@@ -15,7 +15,6 @@ export default function SearchResults({
 
   useEffect(() => {
     if (!hasMore) {
-      console.log("ei enää sivuja");
       return;
     }
 
@@ -23,9 +22,7 @@ export default function SearchResults({
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          console.log("ladataan");
           onLoadMore();
-          console.log(page + 1);
         }
       },
       { threshold: 0.1 }

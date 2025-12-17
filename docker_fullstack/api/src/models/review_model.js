@@ -80,6 +80,18 @@ export async function isAuthor(reviewId, userId) {
   return result.rows.length > 0;
 }
 
+// kokonaistähdet
+export async function getMovieRatingStats(movieId) {
+  const result = await pool.query(
+    `
+    SELECT 
+      ROUND(AVG(rating)::numeric, 1) AS average_rating,
+      COUNT(rating) AS rating_count
+    FROM user_movie_ratings
+    WHERE movie_tmdb_id = $1
+    `,
+    [movieId]
+  );
 
-
-
+  return result.rows[0];
+}

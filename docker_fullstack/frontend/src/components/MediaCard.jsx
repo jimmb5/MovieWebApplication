@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./MediaCard.css";
+import StarRating from "../components/StarRating";
 
 export default function MediaCard({ mediaItem }) {
   const navigate = useNavigate();
@@ -16,7 +17,9 @@ export default function MediaCard({ mediaItem }) {
           alt={mediaItem.title}
         />
       </div>
-      <h3>Tähtiarvostelu</h3>
+      <div className="rating-mediacard ">
+        <StarRating movieId={mediaItem.id} size={24} showInfo={false} />
+      </div>
     </div>
   );
 }

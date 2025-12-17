@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "./Movies.css";
+import StarRating from "../components/StarRating";
 
 export default function Movies() {
   const [movies, setMovies] = useState([]);
@@ -13,20 +14,20 @@ export default function Movies() {
 
   const fetchMovies = useCallback(async (pageNum) => {
     if (loadingRef.current) return;
-    
+
     loadingRef.current = true;
     setLoading(true);
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/movie/popular?page=${pageNum}`
       );
-      
+
       if (pageNum === 1) {
         setMovies(response.data.results);
       } else {
         setMovies((prev) => [...prev, ...response.data.results]);
       }
-      
+
       setHasMore(pageNum < response.data.totalPages);
       setCurrentPage(pageNum);
     } catch (error) {
@@ -67,7 +68,6 @@ export default function Movies() {
     };
   }, [currentPage, hasMore, loading, fetchMovies, movies.length]);
 
-
   return (
     <div className="movies-page">
       <div className="movies-container">
@@ -75,7 +75,7 @@ export default function Movies() {
         <div className="movies-list">
           {movies.map((movie, index) => {
             const isLastMovie = index === movies.length - 1;
-            
+
             return (
               <Link
                 key={movie.id}
@@ -99,14 +99,15 @@ export default function Movies() {
                   <p className="movie-description">
                     {movie.overview || "No overview available"}
                   </p>
+                  <div className="rating">
+                    <StarRating movieId={movie.id} size={24} showInfo={false} />
+                  </div>
                 </div>
               </Link>
             );
           })}
         </div>
-        {loading && (
-          <div className="movies-loading">Loading movies...</div>
-        )}
+        {loading && <div className="movies-loading">Loading movies...</div>}
         {!hasMore && movies.length > 0 && (
           <div className="movies-end">All movies loaded</div>
         )}
@@ -114,4 +115,3 @@ export default function Movies() {
     </div>
   );
 }
-

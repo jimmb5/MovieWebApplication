@@ -56,8 +56,8 @@
 /* Mobiili */
 @media (max-width: 768px) {
   .navbar {
-    flex-wrap: wrap; /* sallii rivinvaihdon */
-    justify-content: center; /* keskitetään logo ja linkit */
+    flex-wrap: wrap;
+    justify-content: center;
     text-align: center;
     gap: 1rem;
   }
@@ -65,14 +65,14 @@
   .navbar-brand {
     width: 100%;
     justify-content: center;
-    margin-bottom: 0.5rem; /* tilaa logon ja linkkien väliin */
+    margin-bottom: 0.5rem;
   }
 
   .navbar-links {
     width: 100%;
-    justify-content: center; /* keskitetään linkit ja user-nappi */
+    justify-content: center;
     gap: 1rem;
-    flex-wrap: nowrap; /* pysyvät samalla rivillä */
+    flex-wrap: nowrap;
   }
 
   .navbar-usericon {
